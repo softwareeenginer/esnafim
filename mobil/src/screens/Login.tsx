@@ -4,6 +4,7 @@ import Layout from "../../constants/Layout";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Button, HStack, Icon, Input, Text, VStack } from "native-base";
 import { Feather, AntDesign } from "@expo/vector-icons";
+import CheckButton from "../Components/CheckButton";
 
 const Login = () => {
   return (
@@ -79,7 +80,7 @@ const Login = () => {
               style={styles.Line}
             ></View>
           </HStack>
-          <Button backgroundColor={"#00C599"} height={12} alignItems={"center"} justifyContent={"center"} onPress={() => console.log("hello world")}> <Text color={"white"} fontSize={"xl"} bold marginTop={-5}>Kayıt ol</Text></Button>
+          <CheckButton text="Kayıt ol"/>
         </VStack>
       </View>
     </SafeAreaView>
