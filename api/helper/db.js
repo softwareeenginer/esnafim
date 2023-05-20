@@ -39,6 +39,8 @@ const initModels = require("../models/init-models");
 
 const db = { ...initModels(sequelize) };
 
+db.Users = require(__dirname + "/../models/Users")(sequelize, Sequelize);
+
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
