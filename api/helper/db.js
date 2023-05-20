@@ -5,7 +5,7 @@ const sequelize = new Sequelize(
   "root", // username
   "", //password
   {
-    host: "esnafim", // web-server
+    host: "localhost", // web-server
     dialect: "mysql",  //DATABASE DIALECT
     timezone: "+00:00",
     dialectOptions: {
@@ -22,7 +22,7 @@ const auto = new SequelizeAuto(
   "root", // username
   "", // password
   {
-    host: "esnafim", // web-server
+    host: "localhost", // web-server
     dialect: "mysql", //DATABASE DIALECT
     directory: "./models",
     caseFile: "p",
