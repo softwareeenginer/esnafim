@@ -1,11 +1,11 @@
 const SequelizeAuto = require("sequelize-auto");
 const Sequelize = require("sequelize");
 const sequelize = new Sequelize(
-  "", // database_name
-  "", // username
+  "esnafim", // database_name
+  "root", // username
   "", //password
   {
-    host: "", // web-server
+    host: "esnafim", // web-server
     dialect: "mysql",  //DATABASE DIALECT
     timezone: "+00:00",
     dialectOptions: {
@@ -18,11 +18,11 @@ const sequelize = new Sequelize(
 
 // ---------- AUTOMATION SAVE FROM DB TO MODELS ---------- //
 const auto = new SequelizeAuto(
-  "", // database_name
-  "", // username
+  "esnafim", // database_name
+  "root", // username
   "", // password
   {
-    host: "localhost", // web-server
+    host: "esnafim", // web-server
     dialect: "mysql", //DATABASE DIALECT
     directory: "./models",
     caseFile: "p",
