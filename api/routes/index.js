@@ -117,7 +117,24 @@ router.post("/register", async (req, res) => {
 
 // -------- TOKEN CONTROL -------- //
 router.post("/token-control", async (req, res) => {
-
+  const { token } = req.body;
+  if (token) {
+    jwt.verify(token, req.app.get("api_secret_key"), function (err, decoded) {
+      if (decoded.status == 1) {
+        res.json({
+          result: true
+        })
+      } else {
+        res.json({
+          result: false
+        })
+      }
+    });
+  } else {
+    res.json({
+      result: false
+    })
+  }
 });
 
 module.exports = router;
