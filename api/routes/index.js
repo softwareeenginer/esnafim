@@ -68,7 +68,50 @@ router.post("/login", async (req, res) => {
 
 // -------- REGISTER. -------- //
 router.post("/register", async (req, res) => {
+  const { email, password } = req.body;
 
+  try {
+    bcrypt.hash(password, 10).then(async (hash) => {
+      const user = {
+        email,
+        password: hash,
+        image: "https://e7.pngegg.com/pngimages/426/859/png-clipart-computer-icons-user-membership-black-area.png",
+        name: "User",
+        surname: Math.floor(Math.random() * 99999)
+      };
+
+      let c_user = await Users.findOne({ where: { email: email } });
+      if (c_user) {
+        res.json({
+          result: false,
+          error: 'already'
+        });
+        return;
+      }
+
+      const promise = Users.create(user);
+
+      promise.then((user) => {
+
+        const token = jwt.sign({ userId: user.userId, status: user.status }, req.app.get('api_secret_key'), {
+          expiresIn: 1408261000
+        });
+
+
+        res.json({
+          result: true,
+          token
+        });
+
+
+      }).catch((err) => {
+        res.json(err);
+      });
+    });
+  } catch (err) {
+    res.status(500);
+    res.json('');
+  }
 });
 
 
