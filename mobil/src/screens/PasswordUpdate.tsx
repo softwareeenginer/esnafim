@@ -8,7 +8,7 @@ import CheckButton from "../Components/CheckButton";
 import { useNavigation } from "@react-navigation/native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
-const ForgotPassword = () => {
+const PasswordUpdate = () => {
     const navigation:any = useNavigation();
   return (
     <SafeAreaView
@@ -47,17 +47,18 @@ const ForgotPassword = () => {
             marginBottom={5}
             textAlign={"center"}
           >
-            Sisteme kayıtlı e-posta adresini gir!
+            Yeni Şifreni gir!
           </Text>
           </View>
           <Input
             variant="underlined"
             numberOfLines={4}
+            keyboardType="numeric"
             maxLength={40}
-            placeholder="E-Posta"
+            placeholder="Şifre"
             InputLeftElement={
               <Icon
-                as={<Feather name="mail" />}
+                as={<AntDesign name="unlock" />}
                 marginRight={2}
                 size={5}
                 ml="2"
@@ -65,15 +66,30 @@ const ForgotPassword = () => {
               />
             }
           />
-         
+          <Input
+            variant="underlined"
+            numberOfLines={4}
+            keyboardType="numeric"
+            maxLength={40}
+            placeholder="Şifre Tekrarı"
+            InputLeftElement={
+              <Icon
+                as={<AntDesign name="unlock" />}
+                marginRight={2}
+                size={5}
+                ml="2"
+                color="#000000"
+              />
+            }
+          />
         </View>
 
         
           <View style={{marginTop:40}}>
           <CheckButton 
           navigation={navigation}
-          navigate="PasswordUpdate"
-          text="Kod Gönder"
+          navigate="Login"
+          text="Onayla"
           />
           </View>
           
@@ -116,4 +132,4 @@ const styles = StyleSheet.create({
       },  
     
   });
-export default ForgotPassword;
+export default PasswordUpdate;

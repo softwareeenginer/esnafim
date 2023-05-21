@@ -5,6 +5,7 @@ import Login from "../src/screens/Login";
 import { NativeBaseProvider, Box } from "native-base";
 import Register from "../src/screens/Register";
 import ForgotPassword from "../src/screens/ForgotPassword";
+import PasswordUpdate from "../src/screens/PasswordUpdate";
 
 const Stack = createStackNavigator();
 
@@ -20,6 +21,7 @@ export default function App() {
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="Register" component={Register} />
         <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
+        <Stack.Screen name="PasswordUpdate" component={PasswordUpdate} />
       </Stack.Navigator>
     </NativeBaseProvider>
   );
