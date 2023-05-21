@@ -19,7 +19,7 @@ import CheckButton from "../Components/CheckButton";
 import { useNavigation } from "@react-navigation/native";
 import { ScrollView } from "react-native-gesture-handler";
 
-const Login = () => {
+const Register = () => {
   const navigation = useNavigation();
   const countries = ["Egypt", "Canada", "Australia", "Ireland"];
   return (
@@ -232,4 +232,4 @@ const styles = StyleSheet.create({
     width: Layout.window.width * 0.3,
   },
 });
-export default Login;
+export default Register;

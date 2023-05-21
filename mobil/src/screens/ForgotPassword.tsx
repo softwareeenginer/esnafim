@@ -2,13 +2,13 @@ import React from "react";
 import { View, Image, ImageBackground, StyleSheet } from "react-native";
 import Layout from "../../constants/Layout";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Button, HStack, Icon, Input, Text, VStack } from "native-base";
+import { Button, HStack, Icon, Input, KeyboardAvoidingView, Text, VStack } from "native-base";
 import { Feather, AntDesign } from "@expo/vector-icons";
 import CheckButton from "../Components/CheckButton";
 import { useNavigation } from "@react-navigation/native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
-const Login = () => {
+const ForgotPassword = () => {
     const navigation:any = useNavigation();
   return (
     <SafeAreaView
@@ -24,6 +24,7 @@ const Login = () => {
           <Image source={require("../../assets/images/title.png")} />
         </ImageBackground>
       </View>
+      <KeyboardAvoidingView>
       <View
         style={styles.FormArea}
       >
@@ -36,8 +37,19 @@ const Login = () => {
             bold
             marginBottom={5}
           >
-            Giriş Yap
+            Şifremi Unuttum
           </Text>
+          <View style={{width:Layout.window.width*0.5, alignSelf:"center"}}>
+          <Text
+            style={{ alignSelf: "center" }}
+            fontSize="xl"
+            bold
+            marginBottom={5}
+            textAlign={"center"}
+          >
+            Sisteme kayıtlı e-posta adresini gir!
+          </Text>
+          </View>
           <Input
             variant="underlined"
             numberOfLines={4}
@@ -53,51 +65,22 @@ const Login = () => {
               />
             }
           />
-          <Input
-            variant="underlined"
-            numberOfLines={4}
-            keyboardType="numeric"
-            maxLength={40}
-            placeholder="Şifre"
-            InputLeftElement={
-              <Icon
-                as={<AntDesign name="unlock" />}
-                marginRight={2}
-                size={5}
-                ml="2"
-                color="#000000"
-              />
-            }
-          />
-          <TouchableOpacity style={{marginTop:20}} onPress={()=>navigation.navigate("ForgotPassword")}>
-            <Text style={{textDecorationLine:"underline", fontWeight:"bold", marginLeft:10}}>şifremi unuttum</Text>
-          </TouchableOpacity>
+         
         </View>
 
-        <VStack marginTop={10} space={10}>
-          <HStack  space={3} alignItems={"center"}>
-            <View
-              style={styles.Line}
-            ></View>
-            <Text bold fontSize={"md"} color={"#878BFF"}>
-              ya da
-            </Text>
-            <View
-              style={styles.Line}
-            ></View>
-          </HStack>
-          <TouchableOpacity 
-          onPress={()=> navigation.navigate("Register")}
-          >
+        
+          <View style={{marginTop:40}}>
           <CheckButton 
           navigation={navigation}
           navigate="Register"
-          text="Kayıt ol"
+          text="Kod Gönder"
           />
-          </TouchableOpacity>
+          </View>
           
-        </VStack>
+          
+       
       </View>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
   
@@ -126,17 +109,11 @@ const styles = StyleSheet.create({
     InputArea:{
         backgroundColor: "#ffffff",
         width: Layout.window.width * 0.8,
-        height: Layout.window.height * 0.4,
         marginTop: -Layout.window.height * 0.05,
         borderRadius: 30,
         paddingVertical: 30,
         paddingHorizontal: 20,
       },  
-    Line:{
-        borderBottomColor: "#878BFF",
-        borderBottomWidth: 1,
-        width: Layout.window.width * 0.3,
-      }  
     
   });
-export default Login;
+export default ForgotPassword;

@@ -1,6 +1,7 @@
 import React from "react";
 import { Box, HStack, Image, Button, Text, VStack } from "native-base";
 import { useNavigation } from "@react-navigation/native";
+import Layout from "../../constants/Layout";
 
 interface IProps {
   text?: string;
@@ -13,6 +14,7 @@ export default function CheckButton(props: IProps) {
   return (
     <VStack>
       <Button
+      width={Layout.window.width*0.8}
         backgroundColor={"#00C599"}
         height={12}
         alignItems={"center"}
