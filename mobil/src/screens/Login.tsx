@@ -5,8 +5,11 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { Button, HStack, Icon, Input, Text, VStack } from "native-base";
 import { Feather, AntDesign } from "@expo/vector-icons";
 import CheckButton from "../Components/CheckButton";
+import { useNavigation } from "@react-navigation/native";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 const Login = () => {
+    const navigation:any = useNavigation();
   return (
     <SafeAreaView
       style={styles.SafeAreaView}
@@ -80,7 +83,16 @@ const Login = () => {
               style={styles.Line}
             ></View>
           </HStack>
-          <CheckButton text="Kayıt ol"/>
+          <TouchableOpacity 
+          onPress={()=> navigation.navigate("Register")}
+          >
+          <CheckButton 
+          navigation={navigation}
+          navigate="Register"
+          text="Kayıt ol"
+          />
+          </TouchableOpacity>
+          
         </VStack>
       </View>
     </SafeAreaView>
