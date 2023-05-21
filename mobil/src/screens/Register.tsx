@@ -175,7 +175,13 @@ const Register = () => {
           </ScrollView>
         </View>
 
-        <VStack marginTop={10} space={10}>
+        <VStack marginTop={3} space={5}>
+        <CheckButton 
+          navigation={navigation}
+          navigate="Login"
+          text="Kayıt Ol"
+          color="#FF7B00"
+          />
           <HStack space={3} alignItems={"center"}>
             <View style={styles.Line}></View>
             <Text bold fontSize={"md"} color={"#878BFF"}>

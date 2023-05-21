@@ -48,6 +48,7 @@ const ChoiceRegister = () => {
           <HStack space={3} alignItems={"center"}>
             <View style={styles.Line}></View>
             <TouchableOpacity
+            onPress={()=>navigation.navigate("HomePage")}
               style={{
                 backgroundColor: "white",
                 paddingVertical: 10,
