@@ -74,6 +74,7 @@ const ForgotPassword = () => {
           navigation={navigation}
           navigate="PasswordUpdate"
           text="Kod Gönder"
+          color="#00C599"
           />
           </View>
           

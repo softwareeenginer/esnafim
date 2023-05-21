@@ -6,7 +6,8 @@ import Layout from "../../constants/Layout";
 interface IProps {
   text?: string;
   navigation: any;
-  navigate:string
+  navigate:string;
+  color:string;
 }
 
 export default function CheckButton(props: IProps) {
@@ -15,7 +16,7 @@ export default function CheckButton(props: IProps) {
     <VStack>
       <Button
       width={Layout.window.width*0.8}
-        backgroundColor={"#00C599"}
+        backgroundColor={props.color}
         height={12}
         alignItems={"center"}
         justifyContent={"center"}

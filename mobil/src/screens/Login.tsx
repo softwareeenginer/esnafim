@@ -74,8 +74,15 @@ const Login = () => {
           </TouchableOpacity>
         </View>
 
-        <VStack marginTop={10} space={10}>
-          <HStack  space={3} alignItems={"center"}>
+        
+        <VStack marginTop={5} space={5}>
+        <CheckButton 
+          navigation={navigation}
+          navigate="Login"
+          text="Giriş Yap"
+          color="#FF7B00"
+          />
+          <HStack marginTop={5} space={3} alignItems={"center"}>
             <View
               style={styles.Line}
             ></View>
@@ -91,6 +98,7 @@ const Login = () => {
           navigation={navigation}
           navigate="ChoiceRegister"
           text="Kayıt ol"
+          color="#00C599"
           />
           
         </VStack>

@@ -90,6 +90,7 @@ const PasswordUpdate = () => {
           navigation={navigation}
           navigate="Login"
           text="Onayla"
+          color="#00C599"
           />
           </View>
           

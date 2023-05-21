@@ -187,6 +187,7 @@ const Register = () => {
             navigation={navigation}
             navigate="Login"
             text="Giriş Yap"
+            color="#00C599"
           />
         </VStack>
       </View>
