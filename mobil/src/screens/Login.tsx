@@ -86,15 +86,12 @@ const Login = () => {
               style={styles.Line}
             ></View>
           </HStack>
-          <TouchableOpacity 
-          onPress={()=> navigation.navigate("Register")}
-          >
+          
           <CheckButton 
           navigation={navigation}
-          navigate="Register"
+          navigate="ChoiceRegister"
           text="Kayıt ol"
           />
-          </TouchableOpacity>
           
         </VStack>
       </View>
