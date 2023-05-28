@@ -6,7 +6,7 @@ import { Button, HStack, Icon, Input, Text, VStack } from "native-base";
 import { Feather, AntDesign } from "@expo/vector-icons";
 import CheckButton from "../Components/CheckButton";
 import { useNavigation } from "@react-navigation/native";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 
 const Login = () => {
     const navigation:any = useNavigation();
@@ -14,6 +14,7 @@ const Login = () => {
     <SafeAreaView
       style={styles.SafeAreaView}
     >
+      <ScrollView>
       <View
         style={styles.Page}
       >
@@ -103,12 +104,14 @@ const Login = () => {
           
         </VStack>
       </View>
+      </ScrollView>
+      
     </SafeAreaView>
   );
   
 };
 const styles = StyleSheet.create({
-    SafeAreaView:{ flex: 1, backgroundColor: "#FF7B00", flexDirection: "column" },
+    SafeAreaView:{ flex: 1,marginBottom:10, backgroundColor: "#FF7B00", flexDirection: "column" },
     Page:{
         width: Layout.window.width,
         height: Layout.window.height * 0.4,

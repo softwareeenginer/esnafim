@@ -6,12 +6,15 @@ import { ImageBackground } from "react-native";
 
 interface IProps {
   indirim: boolean;
+  navigation:any;
+  navigate:string;
 }
 
 export default function Product(props: IProps) {
   return (
     <TouchableOpacity
-      style={{ backgroundColor: "white", paddingBottom:10, borderRadius: 16 }}
+    onPress={()=>props.navigation.navigate(props.navigate)}
+      style={{ backgroundColor: "white", paddingBottom: 10, borderRadius: 16 }}
     >
       <HStack width={Layout.window.width * 0.4} alignItems={"center"}>
         <Box
@@ -39,14 +42,29 @@ export default function Product(props: IProps) {
             style={{
               width: Layout.window.width * 0.1,
               height: Layout.window.height * 0.2,
-              
             }}
             resizeMode="contain"
             source={require("../../assets/images/Lays.jpg")}
           >
-            <Box marginTop={5} marginLeft={-5} backgroundColor={"#FF7B00"} width={38} height={38} borderRadius={"full"} alignItems={"center"} justifyContent={"center"} >
-            <Text bold color={"white"} textAlign={"center"} fontSize={8}>indirimli ürün</Text>
-            </Box>
+            {props.indirim == true ? 
+            <Box
+            marginTop={5}
+            marginLeft={-5}
+            backgroundColor={"#FF7B00"}
+            width={38}
+            height={38}
+            borderRadius={"full"}
+            alignItems={"center"}
+            justifyContent={"center"}
+          >
+            <Text bold color={"white"} textAlign={"center"} fontSize={8}>
+              indirimli ürün
+            </Text>
+          </Box> 
+            : 
+            <></>
+            }
+            
           </ImageBackground>
         </Box>
 

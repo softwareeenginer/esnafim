@@ -28,6 +28,7 @@ const HomePage = () => {
           padding={5}
         >
           <TouchableOpacity
+          onPress={()=> navigation.navigate("HomePage")}
             style={{
               backgroundColor: "white",
               padding: 10,
@@ -71,7 +72,7 @@ const HomePage = () => {
       </ImageBackground>
 
       <VStack width={Layout.window.width}>
-        <Text bold fontSize={"xl"} alignSelf={"flex-start"}>
+        <Text marginLeft={5} bold fontSize={"xl"} alignSelf={"flex-start"}>
           {" "}
           KAPALI{" "}
         </Text>
@@ -85,9 +86,23 @@ const HomePage = () => {
           showsVerticalScrollIndicator={false}
         >
           {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((i) => (
-            <HStack marginTop={5} space={5} paddingX={5} key={i} width={Layout.window.width}>
-              <Product indirim={true}/>
-              <Product indirim={false}/>
+            <HStack
+              marginTop={5}
+              space={5}
+              paddingX={5}
+              key={i}
+              width={Layout.window.width}
+            >
+              <Product
+                navigation={navigation}
+                navigate="ProductDetail"
+                indirim={true}
+              />
+              <Product
+                navigation={navigation}
+                navigate="ProductDetail"
+                indirim={false}
+              />
             </HStack>
           ))}
         </ScrollView>
