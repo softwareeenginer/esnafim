@@ -8,6 +8,7 @@ import ForgotPassword from "../src/screens/ForgotPassword";
 import PasswordUpdate from "../src/screens/PasswordUpdate";
 import ChoiceRegister from "../src/screens/ChoiceRegister";
 import HomePage from "../src/screens/HomePage";
+import MarketDetail from "../src/screens/MarketDetail";
 
 const Stack = createStackNavigator();
 
@@ -26,6 +27,7 @@ export default function App() {
         <Stack.Screen name="PasswordUpdate" component={PasswordUpdate} />
         <Stack.Screen name="ChoiceRegister" component={ChoiceRegister} />
         <Stack.Screen name="HomePage" component={HomePage} />
+        <Stack.Screen name="MarketDetail" component={MarketDetail} />
       </Stack.Navigator>
     </NativeBaseProvider>
   );

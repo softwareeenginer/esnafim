@@ -56,7 +56,7 @@ const HomePage = () => {
       </HStack>
       <ScrollView style={{marginTop:20}} showsVerticalScrollIndicator={false}>
         {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((i) => (
-          <TouchableOpacity key={i} style={{ marginTop: 20, marginBottom:i==12?20:0 }}>
+          <TouchableOpacity onPress={()=>navigation.navigate("MarketDetail")} key={i} style={{ marginTop: 20, marginBottom:i==12?20:0 }}>
             <Market takip={i%2==0?true:false} />
           </TouchableOpacity>
         ))}
