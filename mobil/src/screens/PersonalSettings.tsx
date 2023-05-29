@@ -1,15 +1,17 @@
 import React from "react";
-import {  StyleSheet } from "react-native";
+import { StyleSheet } from "react-native";
 import Layout from "../../constants/Layout";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { HStack, Icon, Image, Input, Text, VStack } from "native-base";
-import { AntDesign } from "@expo/vector-icons";
+import { AntDesign, Feather } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 import CheckButton from "../Components/CheckButton";
+import SelectDropdown from "react-native-select-dropdown";
 
 const PersonalSettings = () => {
   const navigation: any = useNavigation();
+  const countries = ["Egypt", "Canada", "Australia", "Ireland"];
   return (
     <SafeAreaView style={styles.SafeAreaView}>
       <HStack
@@ -39,15 +41,49 @@ const PersonalSettings = () => {
             alt=" "
             source={require("../../assets/images/Profile.jpg")}
           />
+          <HStack space={5}>
+            <Input
+              maxLength={40}
+              width={Layout.window.width * 0.37}
+              placeholder="Rabia"
+              placeholderTextColor={"black"}
+              backgroundColor={"white"}
+              InputRightElement={
+                <Icon
+                  as={<Feather name="edit" />}
+                  marginRight={2}
+                  size={5}
+                  ml="2"
+                  color="#000000"
+                />
+              }
+            />
+            <Input
+              maxLength={40}
+              width={Layout.window.width * 0.37}
+              placeholder="Parlak"
+              placeholderTextColor={"black"}
+              backgroundColor={"white"}
+              InputRightElement={
+                <Icon
+                  as={<Feather name="edit" />}
+                  marginRight={2}
+                  size={5}
+                  ml="2"
+                  color="#000000"
+                />
+              }
+            />
+          </HStack>
           <Input
-            variant="underlined"
-            numberOfLines={4}
-            keyboardType="numeric"
             maxLength={40}
-            placeholder="Şifre"
-            InputLeftElement={
+            width={Layout.window.width * 0.8}
+            placeholder="rparlak345@gmailcom"
+            placeholderTextColor={"black"}
+            backgroundColor={"white"}
+            InputRightElement={
               <Icon
-                as={<AntDesign name="unlock" />}
+                as={<Feather name="edit" />}
                 marginRight={2}
                 size={5}
                 ml="2"
@@ -55,12 +91,90 @@ const PersonalSettings = () => {
               />
             }
           />
-          
+          <HStack space={5}>
+            <SelectDropdown
+              data={countries}
+              defaultButtonText="Gaziantep"
+              buttonStyle={{
+                backgroundColor: "white",
+                borderBottomColor: "#878BFF",
+                width: Layout.window.width * 0.37,
+              }}
+              dropdownOverlayColor="rgba(0,0,0,0.7)"
+              buttonTextStyle={{ fontSize: 12, position: "absolute", right: 5 }}
+              onSelect={(selectedItem, index) => {
+                console.log(selectedItem, index);
+              }}
+              buttonTextAfterSelection={(selectedItem, index) => {
+                return selectedItem;
+              }}
+              rowTextForSelection={(item, index) => {
+                return item;
+              }}
+            />
+            <SelectDropdown
+              data={countries}
+              defaultButtonText="Şehitkamil"
+              buttonStyle={{
+                backgroundColor: "white",
+                borderBottomColor: "#878BFF",
+                width: Layout.window.width * 0.37,
+              }}
+              dropdownOverlayColor="rgba(0,0,0,0.7)"
+              buttonTextStyle={{ fontSize: 12, position: "absolute", right: 5 }}
+              onSelect={(selectedItem, index) => {
+                console.log(selectedItem, index);
+              }}
+              buttonTextAfterSelection={(selectedItem, index) => {
+                return selectedItem;
+              }}
+              rowTextForSelection={(item, index) => {
+                return item;
+              }}
+            />
+          </HStack>
+          <SelectDropdown
+              data={countries}
+              defaultButtonText="Seyrantepe mah."
+              buttonStyle={{
+                backgroundColor: "white",
+                borderBottomColor: "#878BFF",
+                width: Layout.window.width * 0.8,
+              }}
+              dropdownOverlayColor="rgba(0,0,0,0.7)"
+              buttonTextStyle={{ fontSize: 12, position: "absolute", right: 5 }}
+              onSelect={(selectedItem, index) => {
+                console.log(selectedItem, index);
+              }}
+              buttonTextAfterSelection={(selectedItem, index) => {
+                return selectedItem;
+              }}
+              rowTextForSelection={(item, index) => {
+                return item;
+              }}
+            />
+             <Input
+            maxLength={40}
+            width={Layout.window.width * 0.8}
+            keyboardType="numeric"
+            placeholder="Yeni Şifre"
+            placeholderTextColor={"black"}
+            backgroundColor={"white"}
+            InputRightElement={
+              <Icon
+                as={<Feather name="edit" />}
+                marginRight={2}
+                size={5}
+                ml="2"
+                color="#000000"
+              />
+            }
+          />
           <CheckButton
             text="Kaydet"
             color="#878BFF"
             navigation={navigation}
-            navigate="Login"
+            navigate="ProfilePage"
           />
         </VStack>
       </ScrollView>
@@ -87,8 +201,7 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     alignItems: "center",
     justifyContent: "center",
-    opacity:0
+    opacity: 0,
   },
-  
 });
 export default PersonalSettings;

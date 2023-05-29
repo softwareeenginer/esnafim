@@ -52,7 +52,7 @@ const ProfilePage = () => {
               Market Ayarlarım
             </Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.SettingsButton}>
+          <TouchableOpacity onPress={()=>navigation.navigate("NotificationsPage")} style={styles.SettingsButton}>
             <Text bold fontSize={"md"}>
               Bildirimler
             </Text>
