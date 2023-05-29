@@ -20,7 +20,13 @@ import {
   MaterialCommunityIcons,
   MaterialIcons,
 } from "@expo/vector-icons";
-import { color, position } from "native-base/lib/typescript/theme/styled-system";
+import {
+  color,
+  position,
+} from "native-base/lib/typescript/theme/styled-system";
+import NotificationsPage from "../src/screens/NotificationsPage";
+import ProfilePage from "../src/screens/ProfilePage";
+import PersonalSettings from "../src/screens/PersonalSettings";
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -43,6 +49,9 @@ export default function App() {
         <Stack.Screen name="MarketDetail" component={MarketDetail} />
         <Stack.Screen name="ProductDetail" component={ProductDetail} />
         <Stack.Screen name="NeighBottom" component={MyTabs} />
+        <Stack.Screen name="NotificationsBottom" component={MyTabs} />
+        <Stack.Screen name="ProfileBottom" component={MyTabs} />
+        <Stack.Screen name="PersonalSettings" component={PersonalSettings} />
       </Stack.Navigator>
     </NativeBaseProvider>
   );
@@ -54,35 +63,36 @@ function MyTabs() {
         name="NeighbourhoodPage"
         options={{
           tabBarIcon: ({ color, size }) => (
-            <Entypo
-              name="location"
-              color={"#B3B4B3"}
-              size={22}    
-            />
+            <Entypo name="location" color={"#B3B4B3"} size={22} />
           ),
-          tabBarActiveBackgroundColor:"#E4F4F1",
+          tabBarActiveBackgroundColor: "#E4F4F1",
           headerShown: false,
           tabBarShowLabel: false,
         }}
         component={NeighbourhoodPage}
       />
       <Tab.Screen
-        name="NeighbourhoodPage3"
+        name="NotificationsPage"
         options={{
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="bell" color={"#B3B4B3"} size={22} />
           ),
-          tabBarActiveBackgroundColor:"#E4F4F1",
+          tabBarActiveBackgroundColor: "#E4F4F1",
           headerShown: false,
           tabBarShowLabel: false,
         }}
-        component={NeighbourhoodPage}
+        component={NotificationsPage}
       />
       <Tab.Screen
         name="HomePage"
         options={{
           tabBarIcon: ({ color, size }) => (
-            <Foundation style={{marginBottom:10}}  name="home" color={"#00C599"} size={30} />
+            <Foundation
+              style={{ marginBottom: 10 }}
+              name="home"
+              color={"#00C599"}
+              size={30}
+            />
           ),
           headerShown: false,
           tabBarShowLabel: false,
@@ -95,23 +105,23 @@ function MyTabs() {
           tabBarIcon: ({ color, size }) => (
             <FontAwesome name="handshake-o" color={"#B3B4B3"} size={22} />
           ),
-          tabBarActiveBackgroundColor:"#E4F4F1",
+          tabBarActiveBackgroundColor: "#E4F4F1",
           headerShown: false,
           tabBarShowLabel: false,
         }}
         component={NeighbourhoodPage}
       />
       <Tab.Screen
-        name="HomePage3"
+        name="ProfilePage"
         options={{
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="ios-person" color={"#B3B4B3"} size={22} />
           ),
-          tabBarActiveBackgroundColor:"#E4F4F1",
+          tabBarActiveBackgroundColor: "#E4F4F1",
           headerShown: false,
           tabBarShowLabel: false,
         }}
-        component={HomePage}
+        component={ProfilePage}
       />
     </Tab.Navigator>
   );
