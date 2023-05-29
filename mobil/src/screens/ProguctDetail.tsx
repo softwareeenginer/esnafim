@@ -8,7 +8,7 @@ import { useNavigation } from "@react-navigation/native";
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 import Product from "../Components/Product";
 
-const HomePage = () => {
+const ProductDetail = () => {
   const navigation: any = useNavigation();
   return (
     <SafeAreaView style={styles.SafeAreaView}>
@@ -19,7 +19,7 @@ const HomePage = () => {
         padding={5}
       >
         <TouchableOpacity
-        onPress={()=>navigation.navigate("MarketDetail")}
+        onPress={()=>navigation.goBack()}
           style={{
             backgroundColor: "white",
             padding: 10,
@@ -159,4 +159,4 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
 });
-export default HomePage;
+export default ProductDetail;

@@ -10,6 +10,7 @@ import ChoiceRegister from "../src/screens/ChoiceRegister";
 import HomePage from "../src/screens/HomePage";
 import MarketDetail from "../src/screens/MarketDetail";
 import ProductDetail from "../src/screens/ProguctDetail";
+import NeighbourhoodPage from "../src/screens/NeighbourhoodPage";
 
 const Stack = createStackNavigator();
 
@@ -30,6 +31,7 @@ export default function App() {
         <Stack.Screen name="HomePage" component={HomePage} />
         <Stack.Screen name="MarketDetail" component={MarketDetail} />
         <Stack.Screen name="ProductDetail" component={ProductDetail} />
+        <Stack.Screen name="NeighbourhoodPage" component={NeighbourhoodPage} />
       </Stack.Navigator>
     </NativeBaseProvider>
   );

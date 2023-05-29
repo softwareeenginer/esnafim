@@ -9,19 +9,17 @@ interface IProps {
 
 export default function Market(props: IProps) {
   return (
-    <VStack bg={"white"} padding={5} borderRadius={15} space={5}>
+    <VStack bg={"white"} width={Layout.window.width*0.9} alignSelf={"center"}  borderRadius={15}>
       <HStack space={5}>
         <Image
-          marginTop={-5}
           borderTopLeftRadius={15}
-          marginLeft={-5}
           resizeMode="contain"
           alt="Market Görsel"
           height={Layout.window.height * 0.15}
           width={Layout.window.width * 0.5}
           source={require("../../assets/images/bakkal.png")}
         />
-        <VStack alignItems={"center"} justifyContent={"flex-end"} space={3}>
+        <VStack  height={Layout.window.height*0.15} alignItems={"center"} justifyContent={"flex-end"}>
           <Text bold fontSize={"md"}>
             Market Adı
           </Text>
@@ -43,7 +41,7 @@ export default function Market(props: IProps) {
           </TouchableOpacity>
         </VStack>
       </HStack>
-      <VStack space={1} width={Layout.window.width * 0.7}>
+      <VStack  paddingTop={2} space={1} paddingLeft={5} paddingBottom={3} width={Layout.window.width * 0.7}>
         <Text bold color={"black"}>
           500 m uzaklıkta
         </Text>

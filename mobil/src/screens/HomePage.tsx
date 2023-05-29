@@ -38,6 +38,7 @@ const HomePage = () => {
           ESNAFIM
         </Text>
         <TouchableOpacity
+        onPress={()=>navigation.navigate("NeighbourhoodPage")}
           style={{
             backgroundColor: "white",
             paddingVertical: 5,
