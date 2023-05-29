@@ -33,6 +33,7 @@ const PersonalSettings = () => {
       </HStack>
       <ScrollView showsVerticalScrollIndicator={false}>
         <VStack space={3} alignItems={"center"} marginBottom={10}>
+          <TouchableOpacity>
           <Image
             width={Layout.window.width * 0.7}
             height={Layout.window.height * 0.3}
@@ -41,6 +42,9 @@ const PersonalSettings = () => {
             alt=" "
             source={require("../../assets/images/Profile.jpg")}
           />
+          <Feather style={{marginTop:-14, alignSelf:"flex-end"}} name="edit" size={20}/>
+          </TouchableOpacity>
+          
           <HStack space={5}>
             <Input
               maxLength={40}

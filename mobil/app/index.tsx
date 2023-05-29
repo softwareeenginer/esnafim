@@ -27,6 +27,7 @@ import {
 import NotificationsPage from "../src/screens/NotificationsPage";
 import ProfilePage from "../src/screens/ProfilePage";
 import PersonalSettings from "../src/screens/PersonalSettings";
+import FollowMarketPage from "../src/screens/FollowMarketPage";
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -51,6 +52,7 @@ export default function App() {
         <Stack.Screen name="NeighBottom" component={MyTabs} />
         <Stack.Screen name="NotificationsBottom" component={MyTabs} />
         <Stack.Screen name="ProfileBottom" component={MyTabs} />
+        <Stack.Screen name="FollowBottom" component={MyTabs} />
         <Stack.Screen name="PersonalSettings" component={PersonalSettings} />
       </Stack.Navigator>
     </NativeBaseProvider>
@@ -100,7 +102,7 @@ function MyTabs() {
         component={HomePage}
       />
       <Tab.Screen
-        name="NeighbourhoodPage2"
+        name="FollowMarketPage"
         options={{
           tabBarIcon: ({ color, size }) => (
             <FontAwesome name="handshake-o" color={"#B3B4B3"} size={22} />
@@ -109,7 +111,7 @@ function MyTabs() {
           headerShown: false,
           tabBarShowLabel: false,
         }}
-        component={NeighbourhoodPage}
+        component={FollowMarketPage}
       />
       <Tab.Screen
         name="ProfilePage"

@@ -57,7 +57,7 @@ const ProfilePage = () => {
               Bildirimler
             </Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.SettingsButton}>
+          <TouchableOpacity onPress={()=>navigation.navigate("FollowMarketPage")} style={styles.SettingsButton}>
             <Text bold fontSize={"md"}>
               Takip Ettiğim Marketler
             </Text>
