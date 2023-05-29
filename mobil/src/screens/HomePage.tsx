@@ -5,7 +5,8 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import {  HStack, Icon, Text } from "native-base";
 import {  Entypo, Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
+import { ScrollView, TouchableOpacity } from 
+"react-native-gesture-handler";
 import Market from "../Components/Market";
 
 const HomePage = () => {

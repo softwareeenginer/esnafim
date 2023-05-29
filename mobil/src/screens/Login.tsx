@@ -79,7 +79,7 @@ const Login = () => {
         <VStack marginTop={5} space={5}>
         <CheckButton 
           navigation={navigation}
-          navigate="HomePage"
+          navigate="HomeBottom"
           text="Giriş Yap"
           color="#FF7B00"
           />
