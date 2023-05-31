@@ -47,7 +47,7 @@ const ProfilePage = () => {
               Kişisel Ayarlar
             </Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.SettingsButton}>
+          <TouchableOpacity onPress={()=>navigation.navigate("MyMarket")} style={styles.SettingsButton}>
             <Text bold fontSize={"md"}>
               Market Ayarlarım
             </Text>

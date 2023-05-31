@@ -48,8 +48,8 @@ export default function Product(props: IProps) {
           >
             {props.indirim == true ? 
             <Box
-            marginTop={5}
-            marginLeft={-5}
+            marginTop={Layout.window.height*0.035}
+            marginLeft={-Layout.window.width*0.05}
             backgroundColor={"#FF7B00"}
             width={38}
             height={38}

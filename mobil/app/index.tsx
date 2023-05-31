@@ -28,6 +28,8 @@ import NotificationsPage from "../src/screens/NotificationsPage";
 import ProfilePage from "../src/screens/ProfilePage";
 import PersonalSettings from "../src/screens/PersonalSettings";
 import FollowMarketPage from "../src/screens/FollowMarketPage";
+import MyMarket from "../src/screens/MyMarket";
+import ProductEdit from "../src/screens/ProductEdit";
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -54,6 +56,8 @@ export default function App() {
         <Stack.Screen name="ProfileBottom" component={MyTabs} />
         <Stack.Screen name="FollowBottom" component={MyTabs} />
         <Stack.Screen name="PersonalSettings" component={PersonalSettings} />
+        <Stack.Screen name="MyMarket" component={MyMarket} />
+        <Stack.Screen name="ProductEdit" component={ProductEdit} />
       </Stack.Navigator>
     </NativeBaseProvider>
   );
