@@ -249,7 +249,7 @@ const ProductAdd = () => {
             <CheckButton
               text="Paylaş"
               color="#00C599"
-              navigate="MyMarket"
+              navigate="InfoPage"
               navigation={navigation}
             />
           </VStack>

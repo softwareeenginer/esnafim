@@ -31,6 +31,7 @@ import FollowMarketPage from "../src/screens/FollowMarketPage";
 import MyMarket from "../src/screens/MyMarket";
 import ProductEdit from "../src/screens/ProductEdit";
 import ProductAdd from "../src/screens/ProductAdd";
+import InfoPage from "../src/screens/InfoPage";
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -60,6 +61,7 @@ export default function App() {
         <Stack.Screen name="MyMarket" component={MyMarket} />
         <Stack.Screen name="ProductEdit" component={ProductEdit} />
         <Stack.Screen name="ProductAdd" component={ProductAdd} />
+        <Stack.Screen name="InfoPage" component={InfoPage} />
       </Stack.Navigator>
     </NativeBaseProvider>
   );
