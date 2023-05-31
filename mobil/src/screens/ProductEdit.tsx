@@ -1,15 +1,19 @@
-import React from "react";
-import { ImageBackground, StyleSheet, View } from "react-native";
+import React, { useState } from "react";
+import { ImageBackground, StyleSheet, Button } from "react-native";
 import Layout from "../../constants/Layout";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { HStack, Box, Text, VStack } from "native-base";
-import { AntDesign, Entypo, Ionicons } from "@expo/vector-icons";
+import { HStack, Box, Text, VStack, Input, Icon } from "native-base";
+import { AntDesign, Entypo, Feather, Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
-import Product from "../Components/Product";
+import DatePicker from "react-native-date-picker";
+import CheckButton from "../Components/CheckButton";
 
 const ProductEdit = () => {
   const navigation: any = useNavigation();
+  const [isDiscount, setIsDiscount] = useState(false);
+  const [date, setDate] = useState(new Date());
+  const [open, setOpen] = useState(false);
   return (
     <SafeAreaView style={styles.SafeAreaView}>
       <HStack
@@ -19,7 +23,7 @@ const ProductEdit = () => {
         padding={5}
       >
         <TouchableOpacity
-        onPress={()=>navigation.goBack()}
+          onPress={() => navigation.goBack()}
           style={{
             backgroundColor: "white",
             padding: 10,
@@ -30,7 +34,7 @@ const ProductEdit = () => {
         >
           <AntDesign name="left" size={20} color={"black"} />
         </TouchableOpacity>
-        <Text bold>Market Adı </Text>
+        <Text bold>Ürün Düzenle </Text>
         <TouchableOpacity
           style={{
             backgroundColor: "white",
@@ -45,8 +49,8 @@ const ProductEdit = () => {
         </TouchableOpacity>
       </HStack>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <VStack >
-          <Text alignSelf={"center"} bold>
+        <VStack>
+          <Text marginLeft={5} bold>
             LAYS FIRINDAN 500 GR
           </Text>
           <HStack
@@ -69,82 +73,162 @@ const ProductEdit = () => {
                 }}
                 resizeMode="contain"
                 source={require("../../assets/images/Lays.jpg")}
-              >
-                <Box
-                  backgroundColor={"#FF7B00"}
-                  width={70}
-                  height={70}
-                  borderRadius={"full"}
-                  alignItems={"center"}
-                  justifyContent={"center"}
-                  alignSelf={"flex-end"}
-                  marginRight={-8}
-                  marginTop={-8}
-                >
-                  <Text
-                    bold
-                    color={"white"}
-                    textAlign={"center"}
-                    fontSize={"sm"}
-                  >
-                    indirimli ürün
-                  </Text>
-                </Box>
-              </ImageBackground>
+              ></ImageBackground>
             </Box>
             <Box width={Layout.window.width * 0.3}>
-              <Text bold fontSize={10}>
-                İndirimsiz Fiyat :
+              <Text bold fontSize={14}>
+                Ürün Fiyatı
               </Text>
-              <Text alignSelf={"flex-end"} bold fontSize={12} color={"#FF7B00"}>
-                25 TL
-              </Text>
-              <Text bold fontSize={12}>
-                İndirimli Fiyat :
-              </Text>
-              <Text alignSelf={"flex-end"} bold fontSize={16} color={"#FF7B00"}>
-                20 TL
-              </Text>
+              <Input
+                maxLength={40}
+                width={Layout.window.width * 0.4}
+                height={8}
+                placeholder="25 TL"
+                placeholderTextColor={"black"}
+                textAlign={"center"}
+                backgroundColor={"white"}
+                InputRightElement={
+                  <Icon
+                    as={<Feather name="edit" />}
+                    marginRight={2}
+                    size={4}
+                    ml="2"
+                    color="#000000"
+                  />
+                }
+              />
+              <TouchableOpacity
+                onPressIn={() => {
+                  setIsDiscount(true);
+                }}
+                style={{
+                  backgroundColor: "#FF7B00",
+                  paddingVertical: 5,
+                  width: Layout.window.width * 0.4,
+                  marginTop: 10,
+                  alignItems: "center",
+                  borderRadius: 5,
+                }}
+              >
+                <Text bold color={"white"} fontSize={14}>
+                  İndirimli Fiyat
+                </Text>
+              </TouchableOpacity>
+
+              {isDiscount == true ? (
+                <Input
+                  maxLength={40}
+                  width={Layout.window.width * 0.4}
+                  height={8}
+                  placeholder="20 TL"
+                  placeholderTextColor={"black"}
+                  textAlign={"center"}
+                  backgroundColor={"white"}
+                />
+              ) : (
+                <></>
+              )}
             </Box>
           </HStack>
-          <VStack marginLeft={6} space={3}>
-            <HStack
-              marginTop={1}
-              width={Layout.window.width * 0.4}
-              justifyContent={"space-between"}
-            >
-              <Text bold fontSize={10}>
-                70 GR
-              </Text>
-              <Text bold fontSize={10}>
-                6 ADET
-              </Text>
-            </HStack>
-            <Text bold width={Layout.window.width * 0.7}>
-              Lorem Ipsum has been the industry's standard dummy text ever
-            </Text>
-          </VStack>
-          <VStack width={Layout.window.width} padding={5}>
-          <Text bold fontSize={"md"}>Marketin Diğer Ürünleri</Text>  
-          {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((i) => (
-            <HStack
-              marginTop={5}
-              space={5}
-              key={i}
-              width={Layout.window.width}
-            >
-              <Product
-                navigation={navigation}
-                navigate="ProductDetail"
-                indirim={true}
-              />
-              <Product
-                navigation={navigation}
-                navigate="ProductDetail"
-                indirim={false}
-              />
-            </HStack>
-          ))}
+          <TouchableOpacity
+            style={{
+              width: Layout.window.width * 0.1,
+              height: Layout.window.width * 0.1,
+              backgroundColor: "white",
+              alignItems: "center",
+              justifyContent: "center",
+              borderRadius: 30,
+              marginTop: -Layout.window.width * 0.08,
+              marginLeft: Layout.window.width * 0.37,
+            }}
+          >
+            <Ionicons size={24} name="settings-outline" />
+          </TouchableOpacity>
+
+          <VStack width={Layout.window.width} space={3} padding={5} alignItems={"center"}>
+            <Input
+              maxLength={40}
+              width={Layout.window.width * 0.9}
+              height={8}
+              placeholder="LAYS FIRINDAN 500 GR"
+              placeholderTextColor={"black"}
+              backgroundColor={"white"}
+              InputRightElement={
+                <Icon
+                  as={<Feather name="edit" />}
+                  marginRight={2}
+                  size={4}
+                  ml="2"
+                  color="#000000"
+                />
+              }
+            />
+            <Input
+              maxLength={40}
+              width={Layout.window.width * 0.9}
+              height={8}
+              placeholder="22/02/2024"
+              inputMode="decimal"
+              placeholderTextColor={"black"}
+              backgroundColor={"white"}
+              InputRightElement={
+                <Icon
+                  as={<Feather name="edit" />}
+                  marginRight={2}
+                  size={4}
+                  ml="2"
+                  color="#000000"
+                />
+              }
+            />
+            <Input
+              maxLength={40}
+              width={Layout.window.width * 0.9}
+              height={8}
+              placeholder="1 Adet, 500 Gr"
+              inputMode="decimal"
+              placeholderTextColor={"black"}
+              backgroundColor={"white"}
+              InputRightElement={
+                <Icon
+                  as={<Feather name="edit" />}
+                  marginRight={2}
+                  size={4}
+                  ml="2"
+                  color="#000000"
+                />
+              }
+            />
+            <Input
+              maxLength={40}
+              width={Layout.window.width * 0.9}
+              height={8}
+              placeholder="Açıklamalar"
+              inputMode="decimal"
+              placeholderTextColor={"black"}
+              backgroundColor={"white"}
+              InputRightElement={
+                <Icon
+                  as={<Feather name="edit" />}
+                  marginRight={2}
+                  size={4}
+                  ml="2"
+                  color="#000000"
+                />
+              }
+            />
+            <CheckButton
+              text="Kaydet"
+              color="#00C599"
+              navigate="ProductEdit"
+              navigation={navigation}
+            />
+            <CheckButton
+              text="Ürünü Sil"
+              color="#B3B4B3"
+              navigate="MyMarket"
+              navigation={navigation}
+            />
           </VStack>
         </VStack>
       </ScrollView>
