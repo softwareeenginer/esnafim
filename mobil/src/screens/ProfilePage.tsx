@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
   },
   SettingsButton: {
     width: Layout.window.width * 0.8,
-    paddingVertical: 8,
+    paddingVertical: Layout.window.height*0.02,
     backgroundColor: "white",
     alignItems: "center",
     borderRadius: 5,

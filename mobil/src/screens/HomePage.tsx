@@ -21,10 +21,10 @@ const HomePage = () => {
       >
         <TouchableOpacity
           style={{
-            backgroundColor: "white",
             paddingVertical: 5,
             paddingHorizontal: 2,
             borderRadius: 5,
+            opacity:0
           }}
         >
           <Icon
@@ -33,6 +33,7 @@ const HomePage = () => {
             size={8}
             ml="2"
             color="#FF7B00"
+            opacity={0}
           />
         </TouchableOpacity>
         <Text bold fontSize={"2xl"}>

@@ -6,7 +6,7 @@ import { Button, HStack, Icon, Input, KeyboardAvoidingView, Text, VStack } from 
 import { Feather, AntDesign } from "@expo/vector-icons";
 import CheckButton from "../Components/CheckButton";
 import { useNavigation } from "@react-navigation/native";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 
 const PasswordUpdate = () => {
     const navigation:any = useNavigation();
@@ -14,6 +14,9 @@ const PasswordUpdate = () => {
     <SafeAreaView
       style={styles.SafeAreaView}
     >
+      <ScrollView>
+
+     
       <View
         style={styles.Page}
       >
@@ -37,7 +40,7 @@ const PasswordUpdate = () => {
             bold
             marginBottom={5}
           >
-            Şifremi Unuttum
+            Şifremi Güncelle
           </Text>
           <View style={{width:Layout.window.width*0.5, alignSelf:"center"}}>
           <Text
@@ -98,6 +101,7 @@ const PasswordUpdate = () => {
        
       </View>
       </KeyboardAvoidingView>
+      </ScrollView>
     </SafeAreaView>
   );
   

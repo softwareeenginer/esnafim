@@ -19,7 +19,7 @@ export default function Notifications(props: IProps) {
         <Image
           alt=" "
           width={Layout.window.width * 0.16}
-          height={Layout.window.height * 0.1}
+          height={Layout.window.width * 0.16}
           borderRadius={"full"}
           source={require("../../assets/images/bakkal.png")}
         />

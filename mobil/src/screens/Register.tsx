@@ -24,6 +24,9 @@ const Register = () => {
   const countries = ["Egypt", "Canada", "Australia", "Ireland"];
   return (
     <SafeAreaView style={styles.SafeAreaView}>
+      <ScrollView>
+
+    
       <View style={styles.Page}>
         <ImageBackground
           source={require("../../assets/images/backIcon.png")}
@@ -197,6 +200,7 @@ const Register = () => {
           />
         </VStack>
       </View>
+        </ScrollView>
     </SafeAreaView>
   );
 };
