@@ -119,7 +119,7 @@ const MyMarket = () => {
             text="Ürün Ekle"
             color="#00C599"
             navigation={navigation}
-            navigate="MyMarket"
+            navigate="ProductAdd"
           />
           <VStack width={Layout.window.width} space={5}>
             {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((i) => (

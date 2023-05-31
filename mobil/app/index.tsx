@@ -30,6 +30,7 @@ import PersonalSettings from "../src/screens/PersonalSettings";
 import FollowMarketPage from "../src/screens/FollowMarketPage";
 import MyMarket from "../src/screens/MyMarket";
 import ProductEdit from "../src/screens/ProductEdit";
+import ProductAdd from "../src/screens/ProductAdd";
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -58,6 +59,7 @@ export default function App() {
         <Stack.Screen name="PersonalSettings" component={PersonalSettings} />
         <Stack.Screen name="MyMarket" component={MyMarket} />
         <Stack.Screen name="ProductEdit" component={ProductEdit} />
+        <Stack.Screen name="ProductAdd" component={ProductAdd} />
       </Stack.Navigator>
     </NativeBaseProvider>
   );
