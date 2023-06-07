@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { View, Image, ImageBackground, StyleSheet } from "react-native";
 import Layout from "../../constants/Layout";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -7,9 +7,28 @@ import { Feather, AntDesign } from "@expo/vector-icons";
 import CheckButton from "../Components/CheckButton";
 import { useNavigation } from "@react-navigation/native";
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
+import axios from "axios";
 
 const Login = () => {
   const navigation: any = useNavigation();
+
+  useEffect(() => {
+    getCountries();
+  }, []);
+
+  const getCountries =()=>{
+    axios({
+      method: 'get',
+      url: "https://api.countrystatecity.in/v1/countries",
+      //data: {
+      ///  firstName: 'Fred',
+      //  lastName: 'Flintstone'
+      //}
+    }).then((res)=>{
+      console.log(res)
+    });
+  }
+  
   return (
     <SafeAreaView style={styles.SafeAreaView}>
       <ScrollView>

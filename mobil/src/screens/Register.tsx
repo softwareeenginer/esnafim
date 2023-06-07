@@ -18,6 +18,8 @@ import { Feather, AntDesign, SimpleLineIcons } from "@expo/vector-icons";
 import CheckButton from "../Components/CheckButton";
 import { useNavigation } from "@react-navigation/native";
 import { ScrollView } from "react-native-gesture-handler";
+import axios from "axios";
+
 
 const Register = () => {
   const navigation = useNavigation();
@@ -27,10 +29,24 @@ const Register = () => {
     title:string;
   }
   useEffect(() => {
-    fetch("https://api.countrystatecity.in/v1/countries")
-      .then((response) => response.json())
-      .then((response) => setIsCitys(response));
+    getCountries();
   }, []);
+
+  const getCountries =()=>{
+    axios({
+      method: 'get',
+      headers:{
+        "X-CSCAPI-KEY":""
+      },
+      url: "https://api.countrystatecity.in/v1/countries",
+      //data: {
+      ///  firstName: 'Fred',
+      //  lastName: 'Flintstone'
+      //}
+    }).then((res)=>{
+      console.log(res)
+    });
+  }
   return (
     <SafeAreaView style={styles.SafeAreaView}>
       <ScrollView>
