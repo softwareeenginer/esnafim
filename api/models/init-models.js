@@ -5,6 +5,7 @@ var _Districts = require("./Districts");
 var _Follows = require("./Follows");
 var _Markets = require("./Markets");
 var _Neighborhoods = require("./Neighborhoods");
+var _Notifications = require("./Notifications");
 var _Products = require("./Products");
 var _Users = require("./Users");
 
@@ -15,6 +16,7 @@ function initModels(sequelize) {
   var Follows = _Follows(sequelize, DataTypes);
   var Markets = _Markets(sequelize, DataTypes);
   var Neighborhoods = _Neighborhoods(sequelize, DataTypes);
+  var Notifications = _Notifications(sequelize, DataTypes);
   var Products = _Products(sequelize, DataTypes);
   var Users = _Users(sequelize, DataTypes);
 
@@ -40,6 +42,7 @@ function initModels(sequelize) {
     Follows,
     Markets,
     Neighborhoods,
+    Notifications,
     Products,
     Users,
   };

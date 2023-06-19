@@ -73,6 +73,7 @@ db.Follows.belongsTo(db.Markets, {
   onDelete: "cascade",
   onUpdate: "cascade",
 });
+
 db.Citys.hasMany(db.Districts, {
   foreignKey: "sehirId",
   onDelete: "cascade",
@@ -83,6 +84,10 @@ db.Districts.belongsTo(db.Citys, {
   onDelete: "cascade",
   onUpdate: "cascade",
 });
+
+
+
+/*
 db.Districts.hasMany(db.Neighborhoods, {
   foreignKey: "ilceId",
   onDelete: "cascade",
@@ -93,7 +98,9 @@ db.Neighborhoods.belongsTo(db.Districts, {
   onDelete: "cascade",
   onUpdate: "cascade",
 });
-db.Adress.hasMany(db.Citys, {
+
+*/
+/*db.Adress.hasMany(db.Citys, {
   foreignKey: "adressId",
   onDelete: "cascade",
   onUpdate: "cascade",
@@ -102,7 +109,9 @@ db.Citys.belongsTo(db.Adress, {
   foreignKey: "adressId",
   onDelete: "cascade",
   onUpdate: "cascade",
-});
+});*/
+
+/*
 db.Adress.hasMany(db.Districts, {
   foreignKey: "adressId",
   onDelete: "cascade",
@@ -123,6 +132,8 @@ db.Neighborhoods.belongsTo(db.Adress, {
   onDelete: "cascade",
   onUpdate: "cascade",
 });
+*/
+
 
 
 
