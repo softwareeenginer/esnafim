@@ -2,9 +2,9 @@ import { MainStore } from "../../stores/MainStore";
 import Axios from "./Axios";
 
 let token = "";
-let task;
+let task:any;
 
-export async function post(adres, params = null, func = () => { }, getTask = false) {
+export async function post(adres:string, params:any = null, func = () => { }, getTask = false) {
 
 
     Axios.defaults.headers.common['x-access-token'] = "Bearer " + MainStore.token;
@@ -13,12 +13,12 @@ export async function post(adres, params = null, func = () => { }, getTask = fal
         setTimeout(function () {
             task = Axios.post(adres, params);
             resolve(
-                task.then(({ data }) => {
+                task.then(({ data }:any) => {
                     //IStore.setConnection(0);
                     try { data = JSON.parse(data) } catch { }
                     func()
                     return data;
-                }).catch((err) => {
+                }).catch((err:any) => {
                     func()
                     //IStore.setConnection(1);
                     console.warn(err)
@@ -36,8 +36,8 @@ export function getTask() {
     return task;
 }
 
-export async function cancelPost(task) {
-    task.cancel((res) => {
+export async function cancelPost(task:any) {
+    task.cancel((res:any) => {
         console.warn("iptal")
     })
 }

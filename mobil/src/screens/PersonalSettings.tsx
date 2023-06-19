@@ -1,17 +1,45 @@
 import React from "react";
-import { StyleSheet } from "react-native";
+import { StyleSheet, View } from "react-native";
 import Layout from "../../constants/Layout";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { HStack, Icon, Image, Input, Text, VStack } from "native-base";
+import { HStack, Icon, Image, Input, Spinner, Text, VStack } from "native-base";
 import { AntDesign, Feather } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 import CheckButton from "../Components/CheckButton";
 import SelectDropdown from "react-native-select-dropdown";
+import { post } from "../networking/Server";
 
 const PersonalSettings = () => {
   const navigation: any = useNavigation();
   const countries = ["Egypt", "Canada", "Australia", "Ireland"];
+
+  const [userInfo, setUserInfo]: any = React.useState(null);
+  const [loading, setLoading] = React.useState(true);
+
+  React.useEffect(() => {
+    getProfile();
+  }, []);
+
+  const getProfile = () => {
+    post("/api/profile/get").then((res: any) => {
+      if (res.result) {
+        setLoading(false);
+        setUserInfo(res.info);
+      } else {
+        navigation.pop();
+      }
+    });
+  };
+
+  if (loading) {
+    return (
+      <View style={{ alignItems: "center", justifyContent: "center", flex: 1 }}>
+        <Spinner size={22} color={"black"} />
+      </View>
+    );
+  }
+
   return (
     <SafeAreaView style={styles.SafeAreaView}>
       <HStack
@@ -34,22 +62,26 @@ const PersonalSettings = () => {
       <ScrollView showsVerticalScrollIndicator={false}>
         <VStack space={3} alignItems={"center"} marginBottom={10}>
           <TouchableOpacity>
-          <Image
-            width={Layout.window.width * 0.7}
-            height={Layout.window.height * 0.3}
-            borderRadius={"2xl"}
-            resizeMode="contain"
-            alt=" "
-            source={require("../../assets/images/Profile.jpg")}
-          />
-          <Feather style={{marginTop:-14, alignSelf:"flex-end"}} name="edit" size={20}/>
+            <Image
+              width={Layout.window.width * 0.7}
+              height={Layout.window.height * 0.3}
+              borderRadius={"2xl"}
+              resizeMode="contain"
+              alt=" "
+              source={{uri:userInfo?.image}}
+            />
+            <Feather
+              style={{ marginTop: -14, alignSelf: "flex-end" }}
+              name="edit"
+              size={20}
+            />
           </TouchableOpacity>
-          
+
           <HStack space={5}>
             <Input
               maxLength={40}
               width={Layout.window.width * 0.37}
-              placeholder="Rabia"
+              placeholder={userInfo?.name}
               placeholderTextColor={"black"}
               backgroundColor={"white"}
               InputRightElement={
@@ -65,7 +97,7 @@ const PersonalSettings = () => {
             <Input
               maxLength={40}
               width={Layout.window.width * 0.37}
-              placeholder="Parlak"
+              placeholder={userInfo?.surname}
               placeholderTextColor={"black"}
               backgroundColor={"white"}
               InputRightElement={
@@ -82,7 +114,7 @@ const PersonalSettings = () => {
           <Input
             maxLength={40}
             width={Layout.window.width * 0.8}
-            placeholder="rparlak345@gmailcom"
+            placeholder={userInfo?.email}
             placeholderTextColor={"black"}
             backgroundColor={"white"}
             InputRightElement={
@@ -138,26 +170,26 @@ const PersonalSettings = () => {
             />
           </HStack>
           <SelectDropdown
-              data={countries}
-              defaultButtonText="Seyrantepe mah."
-              buttonStyle={{
-                backgroundColor: "white",
-                borderBottomColor: "#878BFF",
-                width: Layout.window.width * 0.8,
-              }}
-              dropdownOverlayColor="rgba(0,0,0,0.7)"
-              buttonTextStyle={{ fontSize: 12, position: "absolute", right: 5 }}
-              onSelect={(selectedItem, index) => {
-                console.log(selectedItem, index);
-              }}
-              buttonTextAfterSelection={(selectedItem, index) => {
-                return selectedItem;
-              }}
-              rowTextForSelection={(item, index) => {
-                return item;
-              }}
-            />
-             <Input
+            data={countries}
+            defaultButtonText="Seyrantepe mah."
+            buttonStyle={{
+              backgroundColor: "white",
+              borderBottomColor: "#878BFF",
+              width: Layout.window.width * 0.8,
+            }}
+            dropdownOverlayColor="rgba(0,0,0,0.7)"
+            buttonTextStyle={{ fontSize: 12, position: "absolute", right: 5 }}
+            onSelect={(selectedItem, index) => {
+              console.log(selectedItem, index);
+            }}
+            buttonTextAfterSelection={(selectedItem, index) => {
+              return selectedItem;
+            }}
+            rowTextForSelection={(item, index) => {
+              return item;
+            }}
+          />
+          <Input
             maxLength={40}
             width={Layout.window.width * 0.8}
             keyboardType="numeric"
@@ -175,6 +207,7 @@ const PersonalSettings = () => {
             }
           />
           <CheckButton
+            onPress={() => {}}
             text="Kaydet"
             color="#878BFF"
             navigation={navigation}

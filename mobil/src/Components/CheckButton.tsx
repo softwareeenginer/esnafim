@@ -6,23 +6,22 @@ import Layout from "../../constants/Layout";
 interface IProps {
   text?: string;
   navigation: any;
-  navigate:string;
-  color:string;
+  navigate: string;
+  color: string;
+  onPress: Function;
 }
 
 export default function CheckButton(props: IProps) {
-
   return (
     <VStack>
       <Button
-      width={Layout.window.width*0.8}
+        width={Layout.window.width * 0.8}
         backgroundColor={props.color}
         height={12}
         alignItems={"center"}
         justifyContent={"center"}
-        onPress={()=>{
-          props.navigation.navigate(props.navigate)
-        }}
+        //@ts-ignore
+        onPress={props.onPress}
       >
         {" "}
         <Text color={"white"} fontSize={"xl"} bold marginTop={-5}>

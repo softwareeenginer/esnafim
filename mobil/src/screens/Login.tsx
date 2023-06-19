@@ -1,34 +1,70 @@
 import React, { useEffect } from "react";
-import { View, Image, ImageBackground, StyleSheet } from "react-native";
+import { View, Image, ImageBackground, StyleSheet, Alert } from "react-native";
 import Layout from "../../constants/Layout";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Button, HStack, Icon, Input, Text, VStack } from "native-base";
+import {
+  Button,
+  HStack,
+  Icon,
+  Input,
+  Spinner,
+  Text,
+  VStack,
+} from "native-base";
 import { Feather, AntDesign } from "@expo/vector-icons";
 import CheckButton from "../Components/CheckButton";
 import { useNavigation } from "@react-navigation/native";
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 import axios from "axios";
+import { post } from "../networking/Server";
+import { MainStore } from "../../stores/MainStore";
+import { goPage } from "../../constants/goPage";
 
 const Login = () => {
   const navigation: any = useNavigation();
+
+  const [email, setEmail] = React.useState("");
+  const [password, setPassword] = React.useState("");
+  const [loading, setLoading] = React.useState(false);
 
   useEffect(() => {
     getCountries();
   }, []);
 
-  const getCountries =()=>{
+  const handleLogin = (email: string = "", password: string = "") => {
+    setLoading(true);
+    post("login", { email, password }).then((res: any) => {
+      if (res.result) {
+        MainStore.setToken(res.token);
+        setLoading(false);
+        goPage(navigation, "HomeBottom", {}, false);
+      } else {
+        setLoading(false);
+        Alert.alert("Hatalı Giriş", "Şifre veya kullanıcı girişi hatalı.", [
+          {
+            text: "İptal",
+            onPress: () => console.log("Cancel Pressed"),
+            style: "cancel",
+          },
+          { text: "Tamam", onPress: () => console.log("OK Pressed") },
+        ]);
+      }
+    });
+  };
+
+  const getCountries = () => {
     axios({
-      method: 'get',
+      method: "get",
       url: "https://api.countrystatecity.in/v1/countries",
       //data: {
       ///  firstName: 'Fred',
       //  lastName: 'Flintstone'
       //}
-    }).then((res)=>{
-      console.log(res)
+    }).then((res) => {
+      console.log(res);
     });
-  }
-  
+  };
+
   return (
     <SafeAreaView style={styles.SafeAreaView}>
       <ScrollView>
@@ -50,11 +86,15 @@ const Login = () => {
             >
               Giriş Yap
             </Text>
+
             <Input
               variant="underlined"
               numberOfLines={4}
               maxLength={40}
               placeholder="E-Posta"
+              onChangeText={(text) => {
+                setEmail(text);
+              }}
               InputLeftElement={
                 <Icon
                   as={<Feather name="mail" />}
@@ -71,6 +111,9 @@ const Login = () => {
               keyboardType="numeric"
               maxLength={40}
               placeholder="Şifre"
+              onChangeText={(text) => {
+                setPassword(text);
+              }}
               InputLeftElement={
                 <Icon
                   as={<AntDesign name="unlock" />}
@@ -98,12 +141,20 @@ const Login = () => {
           </View>
 
           <VStack marginTop={5} space={5}>
-            <CheckButton
-              navigation={navigation}
-              navigate="HomeBottom"
-              text="Giriş Yap"
-              color="#FF7B00"
-            />
+            {loading ? (
+              <Spinner color={"#FF7B00"} size={18} />
+            ) : (
+              <CheckButton
+                onPress={() => {
+                  handleLogin(email, password);
+                }}
+                navigation={navigation}
+                navigate="HomeBottom"
+                text="Giriş Yap"
+                color="#FF7B00"
+              />
+            )}
+
             <HStack marginTop={5} space={3} alignItems={"center"}>
               <View style={styles.Line}></View>
               <Text bold fontSize={"md"} color={"#878BFF"}>
@@ -113,6 +164,9 @@ const Login = () => {
             </HStack>
 
             <CheckButton
+              onPress={() => {
+                console.log("girdi2");
+              }}
               navigation={navigation}
               navigate="ChoiceRegister"
               text="Kayıt ol"

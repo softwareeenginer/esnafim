@@ -11,6 +11,7 @@ const app = express();
 
 const indexRouter = require("./routes/index");
 const marketRouter = require("./routes/market");
+const profileRouter = require("./routes/profile");
 
 // Config
 const config = require("./config");
@@ -38,7 +39,7 @@ app.use("/", indexRouter); // kullanıcı girişi olmadan yapılan istekler
 // /api uygulamaya giriş yaptıktan sonra erişebileceği endpoint noktaları.
 app.use("/api", verifyToken);
 app.use("/api/market", marketRouter);
-
+app.use("/api/profile", profileRouter);
 // catch 404 and forward to error handler
 
 app.use((req, res, next) => {
