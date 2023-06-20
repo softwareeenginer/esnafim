@@ -20,9 +20,13 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.TEXT,
       allowNull: true
     },
-    adres: {
-      type: DataTypes.TEXT,
-      allowNull: true
+    userId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: 'users',
+        key: 'userId'
+      }
     }
   }, {
     sequelize,
@@ -35,6 +39,13 @@ module.exports = function(sequelize, DataTypes) {
         using: "BTREE",
         fields: [
           { name: "marketId" },
+        ]
+      },
+      {
+        name: "userId",
+        using: "BTREE",
+        fields: [
+          { name: "userId" },
         ]
       },
     ]

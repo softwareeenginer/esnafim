@@ -23,8 +23,8 @@ import { goPage } from "../../constants/goPage";
 const Login = () => {
   const navigation: any = useNavigation();
 
-  const [email, setEmail] = React.useState("");
-  const [password, setPassword] = React.useState("");
+  const [email, setEmail] = React.useState("deneme@api.com");
+  const [password, setPassword] = React.useState("123123");
   const [loading, setLoading] = React.useState(false);
 
   useEffect(() => {

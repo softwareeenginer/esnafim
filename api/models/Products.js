@@ -23,6 +23,14 @@ module.exports = function(sequelize, DataTypes) {
     description: {
       type: DataTypes.TEXT,
       allowNull: true
+    },
+    marketId: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      references: {
+        model: 'markets',
+        key: 'marketId'
+      }
     }
   }, {
     sequelize,
@@ -35,6 +43,20 @@ module.exports = function(sequelize, DataTypes) {
         using: "BTREE",
         fields: [
           { name: "urunId" },
+        ]
+      },
+      {
+        name: "products_marketId_foreign_idx",
+        using: "BTREE",
+        fields: [
+          { name: "marketId" },
+        ]
+      },
+      {
+        name: "marketId",
+        using: "BTREE",
+        fields: [
+          { name: "marketId" },
         ]
       },
     ]

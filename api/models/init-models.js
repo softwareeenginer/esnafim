@@ -20,6 +20,8 @@ function initModels(sequelize) {
   var Products = _Products(sequelize, DataTypes);
   var Users = _Users(sequelize, DataTypes);
 
+  Users.belongsTo(Adress, { as: "adress", foreignKey: "adressId"});
+  Adress.hasMany(Users, { as: "users", foreignKey: "adressId"});
   Adress.belongsTo(Citys, { as: "sehir", foreignKey: "sehirId"});
   Citys.hasMany(Adress, { as: "adresses", foreignKey: "sehirId"});
   Districts.belongsTo(Citys, { as: "sehir", foreignKey: "sehirId"});
@@ -30,10 +32,14 @@ function initModels(sequelize) {
   Districts.hasMany(Neighborhoods, { as: "neighborhoods", foreignKey: "ilceId"});
   Follows.belongsTo(Markets, { as: "market", foreignKey: "marketId"});
   Markets.hasMany(Follows, { as: "follows", foreignKey: "marketId"});
+  Products.belongsTo(Markets, { as: "market", foreignKey: "marketId"});
+  Markets.hasMany(Products, { as: "products", foreignKey: "marketId"});
   Adress.belongsTo(Neighborhoods, { as: "mahalle", foreignKey: "mahalleId"});
   Neighborhoods.hasMany(Adress, { as: "adresses", foreignKey: "mahalleId"});
   Follows.belongsTo(Users, { as: "user", foreignKey: "userId"});
   Users.hasMany(Follows, { as: "follows", foreignKey: "userId"});
+  Markets.belongsTo(Users, { as: "user", foreignKey: "userId"});
+  Users.hasMany(Markets, { as: "markets", foreignKey: "userId"});
 
   return {
     Adress,

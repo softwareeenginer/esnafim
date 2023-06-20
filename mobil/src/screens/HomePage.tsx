@@ -1,16 +1,43 @@
 import React from "react";
-import { StyleSheet } from "react-native";
+import { StyleSheet, View } from "react-native";
 import Layout from "../../constants/Layout";
 import { SafeAreaView } from "react-native-safe-area-context";
-import {  HStack, Icon, Text } from "native-base";
-import {  Entypo, Ionicons } from "@expo/vector-icons";
+import { HStack, Icon, Spinner, Text } from "native-base";
+import { Entypo, Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import { ScrollView, TouchableOpacity } from 
-"react-native-gesture-handler";
+import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 import Market from "../Components/Market";
+import { post } from "../networking/Server";
 
 const HomePage = () => {
   const navigation: any = useNavigation();
+
+  const [marketInfo, setMarketInfo]: any = React.useState(null);
+  const [loading, setLoading] = React.useState(true);
+
+  React.useEffect(() => {
+    getMarkets();
+  }, []);
+
+  const getMarkets = () => {
+    post("/api/market/get").then((res: any) => {
+      if (res.result) {
+        setLoading(false);
+        setMarketInfo(res.markets);
+      } else {
+        navigation.pop();
+      }
+    });
+  };
+
+  if (loading) {
+    return (
+      <View style={{ alignItems: "center", justifyContent: "center", flex: 1 }}>
+        <Spinner size={22} color={"black"} />
+      </View>
+    );
+  }
+
   return (
     <SafeAreaView style={styles.SafeAreaView}>
       <HStack
@@ -24,7 +51,7 @@ const HomePage = () => {
             paddingVertical: 5,
             paddingHorizontal: 2,
             borderRadius: 5,
-            opacity:0
+            opacity: 0,
           }}
         >
           <Icon
@@ -40,7 +67,7 @@ const HomePage = () => {
           ESNAFIM
         </Text>
         <TouchableOpacity
-        onPress={()=>navigation.navigate("ProfilePage")}
+          onPress={() => navigation.navigate("ProfilePage")}
           style={{
             backgroundColor: "white",
             paddingVertical: 5,
@@ -57,10 +84,17 @@ const HomePage = () => {
           />
         </TouchableOpacity>
       </HStack>
-      <ScrollView style={{marginTop:20}} showsVerticalScrollIndicator={false}>
-        {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((i) => (
-          <TouchableOpacity onPress={()=>navigation.navigate("MarketDetail")} key={i} style={{ marginTop: 20, marginBottom:i==12?20:0 }}>
-            <Market takip={i%2==0?true:false} />
+      <ScrollView
+        style={{ marginTop: 20 }}
+        showsVerticalScrollIndicator={false}
+      >
+        {marketInfo?.map((i:any) => (
+          <TouchableOpacity
+            onPress={() => navigation.navigate("MarketDetail")}
+            key={i}
+            style={{ marginTop: 20, marginBottom: i == 12 ? 20 : 0 }}
+          >
+            <Market marketInfo={i} takip={i % 2 == 0 ? true : false} />
           </TouchableOpacity>
         ))}
       </ScrollView>

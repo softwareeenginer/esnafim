@@ -62,6 +62,28 @@ db.Follows.belongsTo(db.Users, {
   onDelete: "cascade",
   onUpdate: "cascade",
 });
+db.Users.hasMany(db.Markets, {
+  foreignKey: "userId",
+  onDelete: "cascade",
+  onUpdate: "cascade",
+});
+db.Markets.belongsTo(db.Users, {
+  foreignKey: "userId",
+  onDelete: "cascade",
+  onUpdate: "cascade",
+});
+
+db.Markets.hasMany(db.Products, {
+  foreignKey: "marketId",
+  onDelete: "cascade",
+  onUpdate: "cascade",
+});
+db.Products.belongsTo(db.Markets, {
+  foreignKey: "marketId",
+  onDelete: "cascade",
+  onUpdate: "cascade",
+});
+
 
 db.Markets.hasMany(db.Follows, {
   foreignKey: "marketId",

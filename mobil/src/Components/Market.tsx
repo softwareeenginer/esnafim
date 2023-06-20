@@ -5,9 +5,11 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 
 interface IProps {
   takip: boolean;
+  marketInfo:any;
 }
 
 export default function Market(props: IProps) {
+  console.log(props);
   return (
     <VStack bg={"white"} width={Layout.window.width*0.9} alignSelf={"center"}  borderRadius={15}>
       <HStack space={5}>
@@ -17,13 +19,13 @@ export default function Market(props: IProps) {
           alt="Market Görsel"
           height={Layout.window.height * 0.15}
           width={Layout.window.width * 0.5}
-          source={require("../../assets/images/bakkal.png")}
+          source={{uri:props.marketInfo?.image}}
         />
         <VStack  height={Layout.window.height*0.15} alignItems={"center"} justifyContent={"flex-end"}>
           <Text bold fontSize={"md"}>
-            Market Adı
+            {props.marketInfo?.name}
           </Text>
-          <Text bold>18 Ürün</Text>
+          <Text bold>{props.marketInfo?.product}</Text>
           <TouchableOpacity
             style={{
               backgroundColor: props.takip == true ? "#B3B4B3" : "#00C599",
@@ -46,8 +48,8 @@ export default function Market(props: IProps) {
           500 m uzaklıkta
         </Text>
         <Text bold color={"black"}>
-          Selahattin Eyyubi Selahattin Eyyubi Mah Şehit Ejder Yılmaz Sokak no:2
-        </Text>
+          {props.marketInfo?.address}
+       </Text>
       </VStack>
     </VStack>
   );

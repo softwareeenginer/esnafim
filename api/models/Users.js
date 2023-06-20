@@ -35,6 +35,14 @@ module.exports = function(sequelize, DataTypes) {
     image: {
       type: DataTypes.TEXT,
       allowNull: true
+    },
+    adressId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: 'adress',
+        key: 'adressId'
+      }
     }
   }, {
     sequelize,
@@ -47,6 +55,20 @@ module.exports = function(sequelize, DataTypes) {
         using: "BTREE",
         fields: [
           { name: "userId" },
+        ]
+      },
+      {
+        name: "adressId",
+        using: "BTREE",
+        fields: [
+          { name: "adressId" },
+        ]
+      },
+      {
+        name: "users_adressId_foreign_idx",
+        using: "BTREE",
+        fields: [
+          { name: "adressId" },
         ]
       },
     ]
