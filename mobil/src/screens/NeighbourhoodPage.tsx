@@ -2,15 +2,48 @@ import React from "react";
 import { ImageBackground, StyleSheet, View } from "react-native";
 import Layout from "../../constants/Layout";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { HStack, Box, Text, VStack } from "native-base";
+import { HStack, Box, Text, VStack, Spinner } from "native-base";
 import { AntDesign, Entypo, Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
+import {
+  FlatList,
+  ScrollView,
+  TouchableOpacity,
+} from "react-native-gesture-handler";
 import Product from "../Components/Product";
 import Market from "../Components/Market";
+import { post } from "../networking/Server";
 
 const NeighbourhoodPage = () => {
   const navigation: any = useNavigation();
+  const [marketsInfo, setMarketsInfo]: any = React.useState(null);
+  const [productsInfo, setProductsInfo]: any = React.useState(null);
+  const [neighbourhoodInfo, setneighbourhoodInfo]: any = React.useState(null);
+  const [loading, setLoading] = React.useState(true);
+  React.useEffect(() => {
+    getMarkets();
+  }, []);
+  const getMarkets = () => {
+    post("/api/market/get/location").then((res: any) => {
+      if (res.result) {
+        setLoading(false);
+        setMarketsInfo(res.markets);
+        setProductsInfo(res.products);
+        setneighbourhoodInfo(res.mahalle);
+      } else {
+        navigation.pop();
+      }
+    });
+  };
+
+  if (loading) {
+    return (
+      <View style={{ alignItems: "center", justifyContent: "center", flex: 1 }}>
+        <Spinner size={22} color={"black"} />
+      </View>
+    );
+  }
+
   return (
     <SafeAreaView style={styles.SafeAreaView}>
       <HStack
@@ -31,7 +64,7 @@ const NeighbourhoodPage = () => {
         >
           <AntDesign name="left" size={20} color={"black"} />
         </TouchableOpacity>
-        <Text bold>Mahalle Adı </Text>
+        <Text fontSize={20} bold>{neighbourhoodInfo?.name} </Text>
         <TouchableOpacity
           style={{
             backgroundColor: "white",
@@ -45,39 +78,57 @@ const NeighbourhoodPage = () => {
           <AntDesign name="left" size={20} color={"black"} />
         </TouchableOpacity>
       </HStack>
-      <ScrollView showsVerticalScrollIndicator={false}>
-        {[1, 2].map((i) => (
+
+      <FlatList
+        ListHeaderComponent={
+          <>
+            {marketsInfo?.map((i: any, index: number) => (
+              <TouchableOpacity
+                onPress={() =>
+                  navigation.navigate("MarketDetail", { id: i.marketId })
+                }
+                key={index}
+                style={{ marginTop: 20, marginBottom: i == 12 ? 20 : 0 }}
+              >
+                <Market marketInfo={i} takip={i % 2 == 0 ? true : false} />
+              </TouchableOpacity>
+            ))}
+            <Text marginLeft={6} marginTop={5} fontSize={"md"} bold>
+              Yeni Eklenen Ürünler
+            </Text>
+          </>
+        }
+        columnWrapperStyle={{ justifyContent: "space-between" }}
+        style={{
+          width: Layout.window.width * 0.9,
+          alignSelf: "center",
+          marginTop: "5%",
+        }}
+        numColumns={2}
+        data={productsInfo}
+        renderItem={({ item }) => (
           <TouchableOpacity
-            onPress={() => navigation.navigate("MarketDetail")}
-            key={i}
-            style={{ marginTop: 20, marginBottom: i == 12 ? 20 : 0 }}
-          >
-            <Market takip={i % 2 == 0 ? true : false} />
-          </TouchableOpacity>
-        ))}
-        <Text marginLeft={6} marginTop={5} fontSize={"md"} bold>Yeni Eklenen Ürünler</Text>
-        {[1, 2, 3].map((i) => (
-          <HStack
-            marginTop={5}
-            space={5}
-            paddingX={5}
-            key={i}
-            width={Layout.window.width}
-            marginBottom={i==3?10:0}
+            onPress={() => {
+              navigation.navigate("ProductDetail", {
+                urunId: item.urunId,
+                marketId: item.marketId,
+              });
+            }}
+            style={{
+              backgroundColor: "white",
+              paddingBottom: 10,
+              borderRadius: 16,
+              marginTop: "10%",
+            }}
           >
             <Product
-              navigation={navigation}
-              navigate="ProductDetail"
+              productInfo={item}
+              marketInfo={marketsInfo}
               indirim={true}
             />
-            <Product
-              navigation={navigation}
-              navigate="ProductDetail"
-              indirim={false}
-            />
-          </HStack>
-        ))}
-      </ScrollView>
+          </TouchableOpacity>
+        )}
+      />
     </SafeAreaView>
   );
 };

@@ -32,6 +32,7 @@ import MyMarket from "../src/screens/MyMarket";
 import ProductEdit from "../src/screens/ProductEdit";
 import ProductAdd from "../src/screens/ProductAdd";
 import InfoPage from "../src/screens/InfoPage";
+import Loading from "../src/screens/Loading";
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -40,11 +41,12 @@ export default function App() {
   return (
     <NativeBaseProvider>
       <Stack.Navigator
-        initialRouteName="Login"
+        initialRouteName="Loading"
         screenOptions={{
           headerShown: false,
         }}
       >
+         <Stack.Screen name="Loading" component={Loading} />
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="Register" component={Register} />
         <Stack.Screen name="ForgotPassword" component={ForgotPassword} />

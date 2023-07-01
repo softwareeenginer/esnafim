@@ -6,8 +6,6 @@ import { ImageBackground } from "react-native";
 
 interface IProps {
   indirim: boolean;
-  navigation: any;
-  navigate: string;
   productInfo: any;
   marketInfo: any;
 }
@@ -39,7 +37,7 @@ export default function Product(props: IProps) {
         >
           <ImageBackground
             style={{
-              width: Layout.window.width * 0.1,
+              width: Layout.window.width * 0.2,
               height: Layout.window.height * 0.2,
             }}
             resizeMode="contain"
@@ -48,13 +46,15 @@ export default function Product(props: IProps) {
             {props.indirim == true ? (
               <Box
                 marginTop={Layout.window.height * 0.035}
-                marginLeft={-Layout.window.width * 0.05}
                 backgroundColor={"#FF7B00"}
                 width={38}
                 height={38}
                 borderRadius={"full"}
                 alignItems={"center"}
                 justifyContent={"center"}
+                position={"absolute"}
+                zIndex={5}
+                
               >
                 <Text bold color={"white"} textAlign={"center"} fontSize={8}>
                   indirimli ürün

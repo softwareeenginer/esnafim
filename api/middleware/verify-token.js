@@ -1,7 +1,10 @@
 const jwt = require('jsonwebtoken');
 
 module.exports = (req, res, next) => {
-  const token = req.headers['x-access-token'].replace("Bearer","").trim() || req.body.token || req.query.token;
+
+  console.log(req.headers);
+
+  const token = req.headers['authorization'].replace("Bearer","").trim() || req.body.token || req.query.token;
 
 
   if (token) {

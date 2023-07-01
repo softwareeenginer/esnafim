@@ -7,6 +7,8 @@ import { AntDesign } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 import CheckButton from "../Components/CheckButton";
+import { MainStore } from "../../stores/MainStore";
+import { goPage } from "../../constants/goPage";
 
 const ProfilePage = () => {
   const navigation: any = useNavigation();
@@ -47,22 +49,35 @@ const ProfilePage = () => {
               Kişisel Ayarlar
             </Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={()=>navigation.navigate("MyMarket")} style={styles.SettingsButton}>
+          <TouchableOpacity
+            onPress={() => navigation.navigate("MyMarket")}
+            style={styles.SettingsButton}
+          >
             <Text bold fontSize={"md"}>
               Market Ayarlarım
             </Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={()=>navigation.navigate("NotificationsPage")} style={styles.SettingsButton}>
+          <TouchableOpacity
+            onPress={() => navigation.navigate("NotificationsPage")}
+            style={styles.SettingsButton}
+          >
             <Text bold fontSize={"md"}>
               Bildirimler
             </Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={()=>navigation.navigate("FollowMarketPage")} style={styles.SettingsButton}>
+          <TouchableOpacity
+            onPress={() => navigation.navigate("FollowMarketPage")}
+            style={styles.SettingsButton}
+          >
             <Text bold fontSize={"md"}>
               Takip Ettiğim Marketler
             </Text>
           </TouchableOpacity>
           <CheckButton
+            onPress={() => {
+              MainStore.setToken("");
+              goPage(navigation, "Loading", {}, false);
+            }}
             text="Çıkış Yap"
             color="#878BFF"
             navigation={navigation}
@@ -93,11 +108,11 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     alignItems: "center",
     justifyContent: "center",
-    opacity:0
+    opacity: 0,
   },
   SettingsButton: {
     width: Layout.window.width * 0.8,
-    paddingVertical: Layout.window.height*0.02,
+    paddingVertical: Layout.window.height * 0.02,
     backgroundColor: "white",
     alignItems: "center",
     borderRadius: 5,

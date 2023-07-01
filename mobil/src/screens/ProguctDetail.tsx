@@ -19,13 +19,16 @@ const ProductDetail = (props: any) => {
   const [productInfo, setProductInfo]: any = React.useState(null);
   const [productsInfo, setProductsInfo]: any = React.useState(null);
   const [loading, setLoading] = React.useState(true);
-  const [urunId] = React.useState(props.route.params.urunId);
+  const [urunId, setUrunId] = React.useState(props.route.params.urunId);
   const [marketId] = React.useState(props.route.params.marketId);
+
+  
   React.useEffect(() => {
     getMarkets();
-  }, []);
+  }, [urunId]);
 
   const getMarkets = () => {
+    setLoading(true);
     // console.log("1")
     post("/api/market/get-one/detail", { urunId, marketId }).then(
       (res: any) => {
@@ -67,7 +70,7 @@ const ProductDetail = (props: any) => {
         >
           <AntDesign name="left" size={20} color={"black"} />
         </TouchableOpacity>
-        <Text bold>{marketInfo?.name}</Text>
+        <Text fontSize={20} bold>{marketInfo?.name}</Text>
         <TouchableOpacity
           style={{
             backgroundColor: "white",
@@ -81,7 +84,6 @@ const ProductDetail = (props: any) => {
           <AntDesign name="left" size={20} color={"black"} />
         </TouchableOpacity>
       </HStack>
-      <ScrollView showsVerticalScrollIndicator={false}>
         <VStack>
           <Text alignSelf={"center"} bold>
             {productInfo?.name}
@@ -177,10 +179,7 @@ const ProductDetail = (props: any) => {
               renderItem={({ item }) => (
                 <TouchableOpacity
                   onPress={() => {
-                    navigation.navigate("ProductDetail", {
-                      urunId: item.urunId,
-                      marketId: marketId,
-                    });
+                    setUrunId(item.urunId)
                   }}
                   style={{
                     backgroundColor: "white",
@@ -192,8 +191,6 @@ const ProductDetail = (props: any) => {
                   <Product
                     productInfo={item}
                     marketInfo={marketInfo}
-                    navigation={navigation}
-                    navigate="ProductDetail"
                     indirim={true}
                   />
                 </TouchableOpacity>
@@ -201,7 +198,6 @@ const ProductDetail = (props: any) => {
             />
           </VStack>
         </VStack>
-      </ScrollView>
     </SafeAreaView>
   );
 };

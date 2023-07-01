@@ -25,7 +25,7 @@ const HomePage = () => {
         setLoading(false);
         setMarketInfo(res.markets);
       } else {
-        navigation.pop();
+        //navigation.pop();
       }
     });
   };

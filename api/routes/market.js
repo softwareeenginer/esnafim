@@ -110,16 +110,68 @@ router.post("/get-one/detail", async (req, res) => {
   // const ayse = req.body.userId;
   try {
     let urun = await Products.findOne({ where: { urunId } });
-    let market = await Markets.findOne({where:{marketId:urun.marketId},});
+    let market = await Markets.findOne({ where: { marketId: urun.marketId } });
     const products = await Products.findAll({
       where: { marketId: marketId },
     });
-
     res.json({
       result: true,
       urun,
       products,
       market,
+    });
+  } catch (e) {
+    console.log(e);
+    res.json({
+      result: false,
+    });
+  }
+});
+
+router.post("/get/location", async (req, res) => {
+  const { userId } = req.decoded;
+  try {
+    let user = await Users.findOne({ where: { userId: userId } });
+    let adress = await Adress.findOne({ where: { adressId: user.adressId } });
+
+    let mahalle = await Neighborhoods.findOne({
+      where: { mahalleId: adress.mahalleId },
+    });
+    const adressler = await Adress.findOne({
+      where: { mahalleId: mahalle.mahalleId },
+    });
+    console.log("mahalle : ", adressler.adressId);
+
+    const users = await Users.findAll({
+      where: { adressId: adressler.adressId },
+    });
+    let markets = [];
+    for (let i = 0; i < users.length; i++) {
+      const marketler = await Markets.findAll({
+        where: { userId: users[i].userId },
+      });
+      for (let j = 0; j < marketler.length; j++) {
+        markets.push(marketler[j]);
+      }
+    }
+
+    let products = [];
+    for (let b = 0; b < markets.length; b++) {
+      const product = await Products.findAll({
+        where: { marketId: markets[b].marketId },
+        order: [['createdAt', 'desc']]
+      });
+
+      for (let z = 0; z < product.length; z++) {
+        products.push(product[z]);
+      }
+    }
+
+    res.json({
+      result: true,
+      markets,
+      products,
+      mahalle,
     });
   } catch (e) {
     console.log(e);

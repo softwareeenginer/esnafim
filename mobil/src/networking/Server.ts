@@ -1,39 +1,37 @@
 import { MainStore } from "../../stores/MainStore";
-import Axios from "./Axios";
+import ax from "axios"
 
-let token = "";
+const Axios = ax.create({
+    baseURL: getURL(),
+    timeout: 1000
+})
+
 let task:any;
 
-export async function post(adres:string, params:any = null, func = () => { }, getTask = false) {
+export async function post(adres:string, params:any = null, func = () => { }) {
 
-
-    Axios.defaults.headers.common['x-access-token'] = "Bearer " + MainStore.token;
+    Axios.defaults.headers.common['api_secret_key'] = "localhost";
+    Axios.defaults.headers.common["Content-Type"]="application/json";
+    Axios.defaults.headers.common['authorization'] = "Bearer " + MainStore.token; // Authu.... x-access-token
 
     return new Promise(function (resolve, reject) {
-        setTimeout(function () {
+
             task = Axios.post(adres, params);
             resolve(
                 task.then(({ data }:any) => {
-                    //IStore.setConnection(0);
                     try { data = JSON.parse(data) } catch { }
                     func()
                     return data;
                 }).catch((err:any) => {
                     func()
-                    //IStore.setConnection(1);
                     console.warn(err)
                     return { result: false, error: "No_Connect" };
                 })
             )
-        }, 1000);
     });
 
 
 
-}
-
-export function getTask() {
-    return task;
 }
 
 export async function cancelPost(task:any) {
@@ -42,10 +40,6 @@ export async function cancelPost(task:any) {
     })
 }
 
-export function getURL() {
-    return "http://192.168.43.36:3000/";
-}
-
-export function getImageURL() {
+function getURL() {
     return "http://192.168.43.36:3000/";
 }
