@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, HStack, Image, Text, VStack } from "native-base";
+import { Box, HStack, Image, Text, VStack, View } from "native-base";
 import Layout from "../../constants/Layout";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { ImageBackground } from "react-native";
@@ -9,20 +9,12 @@ interface IProps {
   navigation: any;
   navigate: string;
   productInfo: any;
+  marketInfo: any;
 }
 
 export default function Product(props: IProps) {
-  console.log(props.productInfo);
   return (
-    <TouchableOpacity
-      onPress={() => props.navigation.navigate(props.navigate)}
-      style={{
-        backgroundColor: "white",
-        paddingBottom: 10,
-        borderRadius: 16,
-        marginTop: "10%",
-      }}
-    >
+    <View>
       <HStack width={Layout.window.width * 0.4} alignItems={"center"}>
         <Box
           padding={1}
@@ -88,6 +80,6 @@ export default function Product(props: IProps) {
       <Text fontSize={"xs"} alignSelf={"center"}>
         {props.productInfo?.description}
       </Text>
-    </TouchableOpacity>
+    </View>
   );
 }

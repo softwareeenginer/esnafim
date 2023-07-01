@@ -2,14 +2,51 @@ import React from "react";
 import { ImageBackground, StyleSheet, View } from "react-native";
 import Layout from "../../constants/Layout";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { HStack, Box, Text, VStack } from "native-base";
+import { HStack, Box, Text, VStack, Spinner } from "native-base";
 import { AntDesign, Entypo, Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
+import {
+  FlatList,
+  ScrollView,
+  TouchableOpacity,
+} from "react-native-gesture-handler";
 import Product from "../Components/Product";
+import { post } from "../networking/Server";
 
-const ProductDetail = () => {
+const ProductDetail = (props: any) => {
   const navigation: any = useNavigation();
+  const [marketInfo, setMarketInfo]: any = React.useState(null);
+  const [productInfo, setProductInfo]: any = React.useState(null);
+  const [productsInfo, setProductsInfo]: any = React.useState(null);
+  const [loading, setLoading] = React.useState(true);
+  const [urunId] = React.useState(props.route.params.urunId);
+  const [marketId] = React.useState(props.route.params.marketId);
+  React.useEffect(() => {
+    getMarkets();
+  }, []);
+
+  const getMarkets = () => {
+    // console.log("1")
+    post("/api/market/get-one/detail", { urunId, marketId }).then(
+      (res: any) => {
+        if (res.result) {
+          setLoading(false);
+          setMarketInfo(res.market);
+          setProductInfo(res.urun);
+          setProductsInfo(res.products);
+        } else {
+          navigation.pop();
+        }
+      }
+    );
+  };
+  if (loading) {
+    return (
+      <View style={{ alignItems: "center", justifyContent: "center", flex: 1 }}>
+        <Spinner size={22} color={"black"} />
+      </View>
+    );
+  }
   return (
     <SafeAreaView style={styles.SafeAreaView}>
       <HStack
@@ -19,7 +56,7 @@ const ProductDetail = () => {
         padding={5}
       >
         <TouchableOpacity
-        onPress={()=>navigation.goBack()}
+          onPress={() => navigation.goBack()}
           style={{
             backgroundColor: "white",
             padding: 10,
@@ -30,7 +67,7 @@ const ProductDetail = () => {
         >
           <AntDesign name="left" size={20} color={"black"} />
         </TouchableOpacity>
-        <Text bold>Market Adı </Text>
+        <Text bold>{marketInfo?.name}</Text>
         <TouchableOpacity
           style={{
             backgroundColor: "white",
@@ -45,9 +82,9 @@ const ProductDetail = () => {
         </TouchableOpacity>
       </HStack>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <VStack >
+        <VStack>
           <Text alignSelf={"center"} bold>
-            LAYS FIRINDAN 500 GR
+            {productInfo?.name}
           </Text>
           <HStack
             width={Layout.window.width}
@@ -68,7 +105,7 @@ const ProductDetail = () => {
                   height: Layout.window.height * 0.2,
                 }}
                 resizeMode="contain"
-                source={require("../../assets/images/Lays.jpg")}
+                source={{ uri: productInfo?.image }}
               >
                 <Box
                   backgroundColor={"#FF7B00"}
@@ -103,7 +140,7 @@ const ProductDetail = () => {
                 İndirimli Fiyat :
               </Text>
               <Text alignSelf={"flex-end"} bold fontSize={16} color={"#FF7B00"}>
-                20 TL
+                {productInfo?.price} TL
               </Text>
             </Box>
           </HStack>
@@ -114,37 +151,54 @@ const ProductDetail = () => {
               justifyContent={"space-between"}
             >
               <Text bold fontSize={10}>
-                70 GR
+                {productInfo?.description}
               </Text>
               <Text bold fontSize={10}>
-                6 ADET
+                {productInfo?.description}
               </Text>
             </HStack>
             <Text bold width={Layout.window.width * 0.7}>
-              Lorem Ipsum has been the industry's standard dummy text ever
+              {productInfo?.name} ,{productInfo?.description}
             </Text>
           </VStack>
           <VStack width={Layout.window.width} padding={5}>
-          <Text bold fontSize={"md"}>Marketin Diğer Ürünleri</Text>  
-          {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((i) => (
-            <HStack
-              marginTop={5}
-              space={5}
-              key={i}
-              width={Layout.window.width}
-            >
-              <Product
-                navigation={navigation}
-                navigate="ProductDetail"
-                indirim={true}
-              />
-              <Product
-                navigation={navigation}
-                navigate="ProductDetail"
-                indirim={false}
-              />
-            </HStack>
-          ))}
+            <Text bold fontSize={"md"}>
+              Marketin Diğer Ürünleri
+            </Text>
+            <FlatList
+              columnWrapperStyle={{ justifyContent: "space-between" }}
+              style={{
+                width: Layout.window.width * 0.9,
+                alignSelf: "center",
+                marginTop: "5%",
+              }}
+              numColumns={2}
+              data={productsInfo}
+              renderItem={({ item }) => (
+                <TouchableOpacity
+                  onPress={() => {
+                    navigation.navigate("ProductDetail", {
+                      urunId: item.urunId,
+                      marketId: marketId,
+                    });
+                  }}
+                  style={{
+                    backgroundColor: "white",
+                    paddingBottom: 10,
+                    borderRadius: 16,
+                    marginTop: "10%",
+                  }}
+                >
+                  <Product
+                    productInfo={item}
+                    marketInfo={marketInfo}
+                    navigation={navigation}
+                    navigate="ProductDetail"
+                    indirim={true}
+                  />
+                </TouchableOpacity>
+              )}
+            />
           </VStack>
         </VStack>
       </ScrollView>

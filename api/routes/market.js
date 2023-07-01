@@ -9,7 +9,7 @@ const {
   Districts,
   Citys,
   Neighborhoods,
-  Products
+  Products,
 } = require("../helper/db");
 
 // www.localhost.com/api/market/(bu sayfadaki işlemler)
@@ -31,7 +31,7 @@ router.post("/get", async (req, res) => {
       });
 
       const products = await Products.findAll({
-        where: {marketId: markets[i].marketId}
+        where: { marketId: markets[i].marketId },
       });
 
       const user_ = await Users.findOne({
@@ -59,8 +59,14 @@ router.post("/get", async (req, res) => {
       });
 
       const address = city.name + " " + district.name + " " + neighborhood.name;
-     
-      markets[i] = { ...markets[i].dataValues, follows, address,product, products };
+
+      markets[i] = {
+        ...markets[i].dataValues,
+        follows,
+        address,
+        product,
+        products,
+      };
     }
 
     res.json({
@@ -79,18 +85,16 @@ router.post("/get-one", async (req, res) => {
   const { marketId } = req.body;
   // const ayse = req.body.userId;
   try {
-    let market = await Markets.findOne({where:{marketId}});
+    let market = await Markets.findOne({ where: { marketId } });
 
-      const products = await Products.findAll({
-        where: {marketId: market.marketId}
-      });
-     
-   
+    const products = await Products.findAll({
+      where: { marketId: market.marketId },
+    });
 
     res.json({
       result: true,
       market,
-      products
+      products,
     });
   } catch (e) {
     console.log(e);
@@ -99,6 +103,32 @@ router.post("/get-one", async (req, res) => {
     });
   }
 });
+
+router.post("/get-one/detail", async (req, res) => {
+  const { marketId } = req.body;
+  const { urunId } = req.body;
+  // const ayse = req.body.userId;
+  try {
+    let urun = await Products.findOne({ where: { urunId } });
+    let market = await Markets.findOne({where:{marketId:urun.marketId},});
+    const products = await Products.findAll({
+      where: { marketId: marketId },
+    });
+
+    res.json({
+      result: true,
+      urun,
+      products,
+      market,
+    });
+  } catch (e) {
+    console.log(e);
+    res.json({
+      result: false,
+    });
+  }
+});
+
 module.exports = router;
 
 /*

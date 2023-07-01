@@ -95,7 +95,7 @@ const MarketDetail = (props: any) => {
           paddingX={5}
         >
           <Text bold fontSize={"xl"} color={"white"}>
-            Market Adı
+            {marketInfo?.name}
           </Text>
           <Text bold fontSize={"xl"} color={"white"}>
             1000 km
@@ -115,20 +115,38 @@ const MarketDetail = (props: any) => {
 
         <FlatList
           columnWrapperStyle={{ justifyContent: "space-between" }}
-          style={{width:Layout.window.width*0.9, alignSelf:"center", marginTop:"5%"}}
+          style={{
+            width: Layout.window.width * 0.9,
+            alignSelf: "center",
+            marginTop: "5%",
+          }}
           numColumns={2}
           data={productsInfo}
           renderItem={({ item }) => (
-            <Product
-              productInfo={item}
-              navigation={navigation}
-              navigate="ProductDetail"
-              indirim={true}
-            />
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate("ProductDetail", {
+                  urunId: item.urunId,
+                  marketId:marketId,
+                });
+              }}
+              style={{
+                backgroundColor: "white",
+                paddingBottom: 10,
+                borderRadius: 16,
+                marginTop: "10%",
+              }}
+            >
+              <Product
+                productInfo={item}
+                marketInfo={marketInfo}
+                navigation={navigation}
+                navigate="ProductDetail"
+                indirim={true}
+              />
+            </TouchableOpacity>
           )}
         />
-
-       
       </VStack>
     </SafeAreaView>
   );
