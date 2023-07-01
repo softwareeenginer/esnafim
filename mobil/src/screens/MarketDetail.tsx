@@ -2,14 +2,46 @@ import React from "react";
 import { ImageBackground, StyleSheet, View } from "react-native";
 import Layout from "../../constants/Layout";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { HStack, Icon, Text, VStack } from "native-base";
+import { HStack, Icon, Spinner, Text, VStack } from "native-base";
 import { AntDesign, Entypo, Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
+import {
+  FlatList,
+  ScrollView,
+  TouchableOpacity,
+} from "react-native-gesture-handler";
 import Product from "../Components/Product";
+import { post } from "../networking/Server";
 
-const MarketDetail = () => {
+const MarketDetail = (props: any) => {
   const navigation: any = useNavigation();
+  const [marketInfo, setMarketInfo]: any = React.useState(null);
+  const [productsInfo, setProductsInfo]: any = React.useState(null);
+  const [loading, setLoading] = React.useState(true);
+  const [marketId] = React.useState(props.route.params.id);
+  React.useEffect(() => {
+    getMarkets();
+  }, []);
+
+  const getMarkets = () => {
+    post("/api/market/get-one", { marketId }).then((res: any) => {
+      if (res.result) {
+        setLoading(false);
+        setMarketInfo(res.market);
+        setProductsInfo(res.products);
+      } else {
+        navigation.pop();
+      }
+    });
+  };
+  if (loading) {
+    return (
+      <View style={{ alignItems: "center", justifyContent: "center", flex: 1 }}>
+        <Spinner size={22} color={"black"} />
+      </View>
+    );
+  }
+  // console.log(marketInfo, productsInfo);
   return (
     <SafeAreaView style={styles.SafeAreaView}>
       <ImageBackground
@@ -19,7 +51,7 @@ const MarketDetail = () => {
           height: Layout.window.height * 0.3,
           justifyContent: "space-between",
         }}
-        source={require("../../assets/images/bakkal.png")}
+        source={{ uri: marketInfo?.image }}
       >
         <HStack
           width={Layout.window.width}
@@ -28,7 +60,7 @@ const MarketDetail = () => {
           padding={5}
         >
           <TouchableOpacity
-          onPress={()=> navigation.goBack()}
+            onPress={() => navigation.goBack()}
             style={{
               backgroundColor: "white",
               padding: 10,
@@ -81,31 +113,22 @@ const MarketDetail = () => {
           ÜRÜNLER{" "}
         </Text>
 
-        <ScrollView
-          style={{ marginTop: 10 }}
-          showsVerticalScrollIndicator={false}
-        >
-          {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((i) => (
-            <HStack
-              marginTop={5}
-              space={5}
-              paddingX={5}
-              key={i}
-              width={Layout.window.width}
-            >
-              <Product
-                navigation={navigation}
-                navigate="ProductDetail"
-                indirim={true}
-              />
-              <Product
-                navigation={navigation}
-                navigate="ProductDetail"
-                indirim={false}
-              />
-            </HStack>
-          ))}
-        </ScrollView>
+        <FlatList
+          columnWrapperStyle={{ justifyContent: "space-between" }}
+          style={{width:Layout.window.width*0.9, alignSelf:"center", marginTop:"5%"}}
+          numColumns={2}
+          data={productsInfo}
+          renderItem={({ item }) => (
+            <Product
+              productInfo={item}
+              navigation={navigation}
+              navigate="ProductDetail"
+              indirim={true}
+            />
+          )}
+        />
+
+       
       </VStack>
     </SafeAreaView>
   );

@@ -20,33 +20,32 @@ import { useNavigation } from "@react-navigation/native";
 import { ScrollView } from "react-native-gesture-handler";
 import axios from "axios";
 
-
 const Register = () => {
   const navigation = useNavigation();
   const [isCitys, setIsCitys] = useState([]);
-  type city={
-    id:number;
-    title:string;
-  }
+  type city = {
+    id: number;
+    title: string;
+  };
   useEffect(() => {
     getCountries();
   }, []);
 
-  const getCountries =()=>{
+  const getCountries = () => {
     axios({
-      method: 'get',
-      headers:{
-        "X-CSCAPI-KEY":""
+      method: "get",
+      headers: {
+        "X-CSCAPI-KEY": "",
       },
       url: "https://api.countrystatecity.in/v1/countries",
       //data: {
       ///  firstName: 'Fred',
       //  lastName: 'Flintstone'
       //}
-    }).then((res)=>{
-      console.log(res)
+    }).then((res) => {
+      console.log(res);
     });
-  }
+  };
   return (
     <SafeAreaView style={styles.SafeAreaView}>
       <ScrollView>
@@ -69,7 +68,7 @@ const Register = () => {
               Kayıt Ol
             </Text>
             <ScrollView>
-              {isCitys.map((city:any) => {
+              {isCitys.map((city: any) => {
                 return (
                   <VStack key={city.id}>
                     <Text color={"black"}>{city.title}</Text>
@@ -219,6 +218,7 @@ const Register = () => {
 
           <VStack marginTop={3} space={5}>
             <CheckButton
+              onPress={() => console.log("Regsiter")}
               navigation={navigation}
               navigate="Login"
               text="Kayıt Ol"
@@ -232,6 +232,7 @@ const Register = () => {
               <View style={styles.Line}></View>
             </HStack>
             <CheckButton
+              onPress={() => console.log("Regsiter")}
               navigation={navigation}
               navigate="Login"
               text="Giriş Yap"

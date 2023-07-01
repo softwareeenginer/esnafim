@@ -90,6 +90,7 @@ const PasswordUpdate = () => {
         
           <View style={{marginTop:40}}>
           <CheckButton 
+          onPress={()=>console.log("PasswordUpdate")}
           navigation={navigation}
           navigate="Login"
           text="Onayla"

@@ -30,6 +30,10 @@ router.post("/get", async (req, res) => {
         where: { marketId: markets[i].marketId },
       });
 
+      const products = await Products.findAll({
+        where: {marketId: markets[i].marketId}
+      });
+
       const user_ = await Users.findOne({
         where: { userId: markets[i].userId },
       });
@@ -56,7 +60,7 @@ router.post("/get", async (req, res) => {
 
       const address = city.name + " " + district.name + " " + neighborhood.name;
      
-      markets[i] = { ...markets[i].dataValues, follows, address,product };
+      markets[i] = { ...markets[i].dataValues, follows, address,product, products };
     }
 
     res.json({
@@ -71,6 +75,30 @@ router.post("/get", async (req, res) => {
   }
 });
 
+router.post("/get-one", async (req, res) => {
+  const { marketId } = req.body;
+  // const ayse = req.body.userId;
+  try {
+    let market = await Markets.findOne({where:{marketId}});
+
+      const products = await Products.findAll({
+        where: {marketId: market.marketId}
+      });
+     
+   
+
+    res.json({
+      result: true,
+      market,
+      products
+    });
+  } catch (e) {
+    console.log(e);
+    res.json({
+      result: false,
+    });
+  }
+});
 module.exports = router;
 
 /*

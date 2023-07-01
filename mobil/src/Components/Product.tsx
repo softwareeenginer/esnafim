@@ -6,15 +6,22 @@ import { ImageBackground } from "react-native";
 
 interface IProps {
   indirim: boolean;
-  navigation:any;
-  navigate:string;
+  navigation: any;
+  navigate: string;
+  productInfo: any;
 }
 
 export default function Product(props: IProps) {
+  console.log(props.productInfo);
   return (
     <TouchableOpacity
-    onPress={()=>props.navigation.navigate(props.navigate)}
-      style={{ backgroundColor: "white", paddingBottom: 10, borderRadius: 16 }}
+      onPress={() => props.navigation.navigate(props.navigate)}
+      style={{
+        backgroundColor: "white",
+        paddingBottom: 10,
+        borderRadius: 16,
+        marginTop: "10%",
+      }}
     >
       <HStack width={Layout.window.width * 0.4} alignItems={"center"}>
         <Box
@@ -44,43 +51,42 @@ export default function Product(props: IProps) {
               height: Layout.window.height * 0.2,
             }}
             resizeMode="contain"
-            source={require("../../assets/images/Lays.jpg")}
+            source={{ uri: props.productInfo?.image }}
           >
-            {props.indirim == true ? 
-            <Box
-            marginTop={Layout.window.height*0.035}
-            marginLeft={-Layout.window.width*0.05}
-            backgroundColor={"#FF7B00"}
-            width={38}
-            height={38}
-            borderRadius={"full"}
-            alignItems={"center"}
-            justifyContent={"center"}
-          >
-            <Text bold color={"white"} textAlign={"center"} fontSize={8}>
-              indirimli ürün
-            </Text>
-          </Box> 
-            : 
-            <></>
-            }
-            
+            {props.indirim == true ? (
+              <Box
+                marginTop={Layout.window.height * 0.035}
+                marginLeft={-Layout.window.width * 0.05}
+                backgroundColor={"#FF7B00"}
+                width={38}
+                height={38}
+                borderRadius={"full"}
+                alignItems={"center"}
+                justifyContent={"center"}
+              >
+                <Text bold color={"white"} textAlign={"center"} fontSize={8}>
+                  indirimli ürün
+                </Text>
+              </Box>
+            ) : (
+              <></>
+            )}
           </ImageBackground>
         </Box>
 
         <VStack width={Layout.window.width * 0.15} alignItems={"center"}>
           <Text bold color={"#FF7B00"}>
-            20 TL
+            {props.productInfo?.price}
           </Text>
           <Text fontSize={"xs"}>1 Adet</Text>
-          <Text fontSize={"xs"}>500 gr</Text>
+          <Text fontSize={"xs"}>{props.productInfo?.name}</Text>
         </VStack>
       </HStack>
       <Text marginTop={3} bold fontSize={"xs"} alignSelf={"center"}>
-        Lays Fırından 500 gr
+        {props.productInfo?.name}
       </Text>
       <Text fontSize={"xs"} alignSelf={"center"}>
-        Ürün Açıklaması
+        {props.productInfo?.description}
       </Text>
     </TouchableOpacity>
   );

@@ -88,15 +88,20 @@ const HomePage = () => {
         style={{ marginTop: 20 }}
         showsVerticalScrollIndicator={false}
       >
-        {marketInfo?.map((i:any) => (
-          <TouchableOpacity
-            onPress={() => navigation.navigate("MarketDetail")}
-            key={i}
-            style={{ marginTop: 20, marginBottom: i == 12 ? 20 : 0 }}
-          >
-            <Market marketInfo={i} takip={i % 2 == 0 ? true : false} />
-          </TouchableOpacity>
-        ))}
+        {marketInfo?.map((i: any, index: number) => {
+          return (
+            <TouchableOpacity
+              // onPress={() => navigation.navigate("MarketDetail")}
+              onPress={() => {
+                navigation.navigate("MarketDetail", { id: i.marketId });
+              }}
+              key={index}
+              style={{ marginTop: 20, marginBottom: i == 12 ? 20 : 0 }}
+            >
+              <Market marketInfo={i} takip={i % 2 == 0 ? true : false} />
+            </TouchableOpacity>
+          );
+        })}
       </ScrollView>
     </SafeAreaView>
   );
