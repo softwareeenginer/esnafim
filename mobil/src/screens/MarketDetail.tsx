@@ -140,8 +140,6 @@ const MarketDetail = (props: any) => {
               <Product
                 productInfo={item}
                 marketInfo={marketInfo}
-                navigation={navigation}
-                navigate="ProductDetail"
                 indirim={true}
               />
             </TouchableOpacity>

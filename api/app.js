@@ -12,6 +12,7 @@ const app = express();
 const indexRouter = require("./routes/index");
 const marketRouter = require("./routes/market");
 const profileRouter = require("./routes/profile");
+const followRouter = require("./routes/follow");
 
 // Config
 const config = require("./config");
@@ -33,13 +34,13 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use("/uploads", express.static(__dirname + "/uploads"));
 
-
 app.use("/", indexRouter); // kullanıcı girişi olmadan yapılan istekler
 
 // /api uygulamaya giriş yaptıktan sonra erişebileceği endpoint noktaları.
 app.use("/api", verifyToken);
 app.use("/api/market", marketRouter);
 app.use("/api/profile", profileRouter);
+app.use("/api/follow", followRouter);
 // catch 404 and forward to error handler
 
 app.use((req, res, next) => {

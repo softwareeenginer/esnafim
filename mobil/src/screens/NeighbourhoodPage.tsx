@@ -80,6 +80,7 @@ const NeighbourhoodPage = () => {
       </HStack>
 
       <FlatList
+      showsVerticalScrollIndicator={false}
         ListHeaderComponent={
           <>
             {marketsInfo?.map((i: any, index: number) => (
@@ -102,7 +103,7 @@ const NeighbourhoodPage = () => {
         style={{
           width: Layout.window.width * 0.9,
           alignSelf: "center",
-          marginTop: "5%",
+          marginBottom:"2%"
         }}
         numColumns={2}
         data={productsInfo}
