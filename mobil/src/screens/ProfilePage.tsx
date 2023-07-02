@@ -1,17 +1,44 @@
 import React from "react";
-import { StyleSheet } from "react-native";
+import { StyleSheet, View } from "react-native";
 import Layout from "../../constants/Layout";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { HStack, Image, Text, VStack } from "native-base";
+import { HStack, Image, Spinner, Text, VStack } from "native-base";
 import { AntDesign } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 import CheckButton from "../Components/CheckButton";
 import { MainStore } from "../../stores/MainStore";
 import { goPage } from "../../constants/goPage";
+import { post } from "../networking/Server";
 
 const ProfilePage = () => {
   const navigation: any = useNavigation();
+
+  const [userInfo, setUserInfo]: any = React.useState(null);
+  const [loading, setLoading] = React.useState(true);
+
+  React.useEffect(() => {
+    getProfile();
+  }, []);
+
+  const getProfile = () => {
+    post("/api/profile/get").then((res: any) => {
+      if (res.result) {
+        setLoading(false);
+        setUserInfo(res.info);
+      } else {
+        navigation.pop();
+      }
+    });
+  };
+
+  if (loading) {
+    return (
+      <View style={{ alignItems: "center", justifyContent: "center", flex: 1 }}>
+        <Spinner size={22} color={"black"} />
+      </View>
+    );
+  }
   return (
     <SafeAreaView style={styles.SafeAreaView}>
       <HStack
@@ -39,7 +66,7 @@ const ProfilePage = () => {
             borderRadius={"2xl"}
             resizeMode="contain"
             alt=" "
-            source={require("../../assets/images/Profile.jpg")}
+            source={{ uri: userInfo?.image }}
           />
           <TouchableOpacity
             onPress={() => navigation.navigate("PersonalSettings")}

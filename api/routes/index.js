@@ -68,7 +68,7 @@ router.post("/login", async (req, res) => {
 
 // -------- REGISTER. -------- //
 router.post("/register", async (req, res) => {
-  const { email, password } = req.body;
+  const { email, password,type } = req.body;
 
   try {
     bcrypt.hash(password, 10).then(async (hash) => {

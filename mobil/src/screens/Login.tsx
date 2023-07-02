@@ -164,9 +164,7 @@ const Login = () => {
             </HStack>
 
             <CheckButton
-              onPress={() => {
-                console.log("girdi2");
-              }}
+              onPress={() => navigation.navigate("ChoiceRegister")}
               navigation={navigation}
               navigate="ChoiceRegister"
               text="Kayıt ol"

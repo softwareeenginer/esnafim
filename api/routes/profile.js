@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
-const { Users } = require("../helper/db");
+const { Users, Markets, Follows, Products } = require("../helper/db");
 
 router.post("/get", async (req, res) => {
   const { userId } = req.decoded;
@@ -11,12 +11,39 @@ router.post("/get", async (req, res) => {
       where: {
         userId,
       },
-      attributes: ["name", "surname", "email", "image"],
+    });
+    const type = info.type;
+    let myMarket = {};
+    let followsCount;
+    let productsCount;
+    if (type == 1) {
+      let market = await Markets.findOne({ where: { userId } });
+      myMarket = market;
+      const follows = await Follows.count({
+        where: { marketId: market.marketId },
+      });
+      followsCount = follows;
+      const product = await Products.count({
+        where: { marketId: market.marketId },
+      });
+      productsCount = product;
+
+      console.log(product);
+    } else {
+      console.log("Alıcı Kullanıcı");
+    }
+
+    const products = await Products.findAll({
+      where: { marketId: myMarket.marketId },
     });
 
     res.json({
       result: true,
       info,
+      myMarket,
+      followsCount,
+      productsCount,
+      products,
     });
   } catch (e) {
     res.json({

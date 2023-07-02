@@ -43,6 +43,11 @@ module.exports = function(sequelize, DataTypes) {
         model: 'adress',
         key: 'adressId'
       }
+    },
+    type: {
+      type: DataTypes.TINYINT,
+      allowNull: false,
+      defaultValue: 1
     }
   }, {
     sequelize,

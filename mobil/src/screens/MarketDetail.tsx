@@ -20,6 +20,7 @@ const MarketDetail = (props: any) => {
   const [status, setStatus]: any = React.useState();
   const [loading, setLoading] = React.useState(true);
   const [marketId] = React.useState(props.route.params.id);
+  console.log(status);
   useFocusEffect(
     React.useCallback(() => {
       getMarkets();
