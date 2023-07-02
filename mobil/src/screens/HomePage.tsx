@@ -4,7 +4,7 @@ import Layout from "../../constants/Layout";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { HStack, Icon, Spinner, Text } from "native-base";
 import { Entypo, Ionicons } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 import Market from "../Components/Market";
 import { post } from "../networking/Server";
@@ -15,10 +15,23 @@ const HomePage = () => {
   const [marketInfo, setMarketInfo]: any = React.useState(null);
   const [loading, setLoading] = React.useState(true);
 
-  React.useEffect(() => {
-    getMarkets();
-  }, []);
+  useFocusEffect(
+    React.useCallback(() => {
+      getMarkets();
+    }, [])
+  );
 
+  const postFollows = (marketId: number) => {
+    post("/api/follow/set/update", {
+      marketId,
+    }).then((res: any) => {
+      if (res.result) {
+        setLoading(false);
+        getMarkets();
+      } else {
+      }
+    });
+  };
   const getMarkets = () => {
     post("/api/market/get").then((res: any) => {
       if (res.result) {
@@ -98,7 +111,13 @@ const HomePage = () => {
               key={index}
               style={{ marginTop: 20, marginBottom: i == 12 ? 20 : 0 }}
             >
-              <Market marketInfo={i} takip={i % 2 == 0 ? true : false} />
+              <Market
+                marketInfo={i}
+                status={i.follow.status}
+                onPress={() => {
+                  postFollows(i.marketId);
+                }}
+              />
             </TouchableOpacity>
           );
         })}

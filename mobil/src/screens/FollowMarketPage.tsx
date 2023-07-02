@@ -4,7 +4,7 @@ import Layout from "../../constants/Layout";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { HStack, Box, Text, VStack, Spinner } from "native-base";
 import { AntDesign, Entypo, Ionicons } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 import Product from "../Components/Product";
 import Market from "../Components/Market";
@@ -15,15 +15,29 @@ const FollowMarketPage = () => {
   const [marketsInfo, setMarketsInfo]: any = React.useState(null);
   const [loading, setLoading] = React.useState(true);
 
-  React.useEffect(() => {
-    getFollows();
-  }, []);
+  useFocusEffect(
+    React.useCallback(() => {
+      getFollows();
+    }, [])
+  );
 
   const getFollows = () => {
     post("/api/follow/get").then((res: any) => {
       if (res.result) {
         setLoading(false);
         setMarketsInfo(res.markets);
+      } else {
+        navigation.pop();
+      }
+    });
+  };
+  const postFollows = (marketId: number) => {
+    post("/api/follow/set/update", {
+      marketId,
+    }).then((res: any) => {
+      if (res.result) {
+        setLoading(false);
+        getFollows();
       } else {
         navigation.pop();
       }
@@ -74,17 +88,26 @@ const FollowMarketPage = () => {
       </HStack>
 
       <ScrollView showsVerticalScrollIndicator={false}>
-        {marketsInfo?.map((i: any, index: number) => (
-          <TouchableOpacity
-            onPress={() =>
-              navigation.navigate("MarketDetail", { id: i.marketId })
-            }
-            key={index}
-            style={{ marginTop: 20, marginBottom: i == 12 ? 20 : 0 }}
-          >
-            <Market marketInfo={i} takip={i % 2 == 0 ? true : false} />
-          </TouchableOpacity>
-        ))}
+        {marketsInfo?.map((i: any, index: number) => {
+          console.log(i.marketId);
+          return (
+            <TouchableOpacity
+              onPress={() =>
+                navigation.navigate("MarketDetail", { id: i.marketId })
+              }
+              key={index}
+              style={{ marginTop: 20, marginBottom: i == 12 ? 20 : 0 }}
+            >
+              <Market
+                marketInfo={i}
+                status={true}
+                onPress={() => {
+                  postFollows(i.marketId);
+                }}
+              />
+            </TouchableOpacity>
+          );
+        })}
       </ScrollView>
     </SafeAreaView>
   );

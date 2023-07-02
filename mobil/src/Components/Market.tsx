@@ -5,8 +5,9 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import { useNavigation } from "expo-router";
 
 interface IProps {
-  takip: boolean;
+  status:any;
   marketInfo: any;
+  onPress: Function;
 }
 
 export default function Market(props: IProps) {
@@ -37,14 +38,16 @@ export default function Market(props: IProps) {
           </Text>
           <Text bold>{props.marketInfo?.product}</Text>
           <TouchableOpacity
+          //@ts-ignore
+            onPress={props.onPress}
             style={{
-              backgroundColor: props.takip == true ? "#B3B4B3" : "#00C599",
+              backgroundColor: props.status == true ? "#B3B4B3" : "#00C599",
               paddingHorizontal: 15,
               paddingVertical: 5,
               borderRadius: 8,
             }}
           >
-            {props.takip == true ? (
+            {props.status == true ? (
               <Text bold color={"white"} fontSize={"md"}>
                 Takibi Bırak
               </Text>

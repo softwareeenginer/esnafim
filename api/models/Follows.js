@@ -22,6 +22,11 @@ module.exports = function(sequelize, DataTypes) {
         model: 'markets',
         key: 'marketId'
       }
+    },
+    status: {
+      type: DataTypes.TINYINT,
+      allowNull: false,
+      defaultValue: 1
     }
   }, {
     sequelize,

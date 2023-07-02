@@ -15,7 +15,7 @@ const {
 // www.localhost.com/api/market/(bu sayfadaki işlemler)
 
 router.post("/get", async (req, res) => {
-  const { userId } = req.body;
+  const { userId } = req.decoded;
   // const ayse = req.body.userId;
   try {
     let markets = await Markets.findAll({
@@ -23,6 +23,10 @@ router.post("/get", async (req, res) => {
     });
 
     for (let i = 0; i < markets.length; i++) {
+      const follow = await Follows.findOne({
+        where: { userId,  marketId: markets[i].marketId },
+      });
+
       const follows = await Follows.count({
         where: { marketId: markets[i].marketId },
       });
@@ -66,6 +70,7 @@ router.post("/get", async (req, res) => {
         address,
         product,
         products,
+        follow
       };
     }
 
@@ -159,7 +164,7 @@ router.post("/get/location", async (req, res) => {
     for (let b = 0; b < markets.length; b++) {
       const product = await Products.findAll({
         where: { marketId: markets[b].marketId },
-        order: [['createdAt', 'desc']]
+        order: [["createdAt", "desc"]],
       });
 
       for (let z = 0; z < product.length; z++) {
