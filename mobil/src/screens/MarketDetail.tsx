@@ -4,7 +4,7 @@ import Layout from "../../constants/Layout";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { HStack, Icon, Spinner, Text, VStack } from "native-base";
 import { AntDesign, Entypo, Ionicons } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import {
   FlatList,
   ScrollView,
@@ -17,18 +17,33 @@ const MarketDetail = (props: any) => {
   const navigation: any = useNavigation();
   const [marketInfo, setMarketInfo]: any = React.useState(null);
   const [productsInfo, setProductsInfo]: any = React.useState(null);
+  const [status, setStatus]: any = React.useState();
   const [loading, setLoading] = React.useState(true);
   const [marketId] = React.useState(props.route.params.id);
-  React.useEffect(() => {
-    getMarkets();
-  }, []);
+  useFocusEffect(
+    React.useCallback(() => {
+      getMarkets();
+    }, [])
+  );
 
+  const postFollows = (marketId: number) => {
+    post("/api/follow/set/update", {
+      marketId,
+    }).then((res: any) => {
+      if (res.result) {
+        setLoading(false);
+        getMarkets();
+      } else {
+      }
+    });
+  };
   const getMarkets = () => {
     post("/api/market/get-one", { marketId }).then((res: any) => {
       if (res.result) {
         setLoading(false);
         setMarketInfo(res.market);
         setProductsInfo(res.products);
+        setStatus(res.follow);
       } else {
         navigation.pop();
       }
@@ -72,6 +87,9 @@ const MarketDetail = (props: any) => {
             <AntDesign name="left" size={20} color={"black"} />
           </TouchableOpacity>
           <TouchableOpacity
+            onPress={() => {
+              [postFollows(marketInfo?.marketId)];
+            }}
             style={{
               backgroundColor: "white",
               paddingHorizontal: 16,
@@ -81,9 +99,15 @@ const MarketDetail = (props: any) => {
               justifyContent: "center",
             }}
           >
-            <Text bold fontSize={"lg"} color={"#FF7B00"}>
-              Takip et
-            </Text>
+            {status?.status == true ? (
+              <Text bold fontSize={"lg"} color={"#FF7B00"}>
+                Takibi bırak
+              </Text>
+            ) : (
+              <Text bold fontSize={"lg"} color={"#FF7B00"}>
+                Takip et
+              </Text>
+            )}
           </TouchableOpacity>
         </HStack>
         <HStack
@@ -127,7 +151,7 @@ const MarketDetail = (props: any) => {
               onPress={() => {
                 navigation.navigate("ProductDetail", {
                   urunId: item.urunId,
-                  marketId:marketId,
+                  marketId: marketId,
                 });
               }}
               style={{

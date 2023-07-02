@@ -24,7 +24,7 @@ router.post("/get", async (req, res) => {
 
     for (let i = 0; i < markets.length; i++) {
       const follow = await Follows.findOne({
-        where: { userId,  marketId: markets[i].marketId },
+        where: { userId, marketId: markets[i].marketId },
       });
 
       const follows = await Follows.count({
@@ -70,7 +70,7 @@ router.post("/get", async (req, res) => {
         address,
         product,
         products,
-        follow
+        follow,
       };
     }
 
@@ -87,10 +87,15 @@ router.post("/get", async (req, res) => {
 });
 
 router.post("/get-one", async (req, res) => {
+  const { userId } = req.decoded;
   const { marketId } = req.body;
   // const ayse = req.body.userId;
   try {
     let market = await Markets.findOne({ where: { marketId } });
+
+    const follow = await Follows.findOne({
+      where: { userId, marketId: market.marketId },
+    });
 
     const products = await Products.findAll({
       where: { marketId: market.marketId },
@@ -100,6 +105,7 @@ router.post("/get-one", async (req, res) => {
       result: true,
       market,
       products,
+      follow,
     });
   } catch (e) {
     console.log(e);
