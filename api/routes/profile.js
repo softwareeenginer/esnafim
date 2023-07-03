@@ -52,4 +52,71 @@ router.post("/get", async (req, res) => {
   }
 });
 
+router.post("/get/product", async (req, res) => {
+  const { userId } = req.decoded;
+  const { urunId } = req.body;
+
+  try {
+    let urun = await Products.findOne({ where: { urunId } });
+
+    res.json({
+      result: true,
+      urun,
+    });
+  } catch (e) {
+    res.json({
+      error: e,
+    });
+  }
+});
+router.post("/get/product-edit", async (req, res) => {
+  const { userId } = req.decoded;
+  const { urunId } = req.body;
+  const { price } = req.body;
+  const { name } = req.body;
+  const { description } = req.body;
+
+  console.log(name);
+  try {
+    let urun = await Products.findOne({ where: { urunId } });
+
+    if (name) {
+      await Products.update(
+        {
+          name: name,
+        },
+        { where: { urunId } }
+      );
+    }
+
+    if (price) {
+      await Products.update(
+        {
+          price: price,
+        },
+        { where: { urunId } }
+      );
+    }
+    if (description) {
+      await Products.update(
+        {
+          description: description,
+        },
+        { where: { urunId } }
+      );
+    } else {
+      console.log("hata");
+    }
+    console.log(urun.name);
+    res.json({
+      result: true,
+    
+    });
+  } catch (e) {
+    res.json({
+      error: e,
+    });
+  }
+});
+
 module.exports = router;

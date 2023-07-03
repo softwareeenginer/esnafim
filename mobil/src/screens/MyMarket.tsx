@@ -13,7 +13,7 @@ import {
   VStack,
 } from "native-base";
 import { AntDesign, Entypo, Feather, Ionicons } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import {
   FlatList,
   ScrollView,
@@ -31,9 +31,12 @@ const MyMarket = () => {
   const [follows, setFollows]: any = React.useState(null);
   const [products, setProducts]: any = React.useState(null);
   const [loading, setLoading] = React.useState(true);
-  React.useEffect(() => {
-    getProfile();
-  }, []);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      getProfile();
+    }, [])
+  );
 
   const getProfile = () => {
     post("/api/profile/get").then((res: any) => {
@@ -78,7 +81,9 @@ const MyMarket = () => {
         >
           <AntDesign name="left" size={20} color={"black"} />
         </TouchableOpacity>
-        <Text bold>Marketim </Text>
+        <Text fontSize={20} bold>
+          Marketim{" "}
+        </Text>
         <TouchableOpacity
           style={{
             backgroundColor: "white",
@@ -131,7 +136,13 @@ const MyMarket = () => {
                 width={Layout.window.width * 0.4}
               >
                 <Text bold fontSize={20} color={"#FF7B00"}>
+                  Ürünlerim
+                </Text>
+                <Text bold fontSize={20} color={"#FF7B00"}>
                   {products}
+                </Text>
+                <Text bold fontSize={20} color={"#878BFF"}>
+                  Takipçilerim
                 </Text>
                 <Text bold fontSize={22} color={"#878BFF"}>
                   {follows}
