@@ -153,28 +153,33 @@ router.post("/get/location", async (req, res) => {
     });
     console.log("mahalle : ", adressler.adressId);
 
+    // market sahipleri
     const users = await Users.findAll({
       where: { adressId: adressler.adressId },
     });
     let markets = [];
-    for (let i = 0; i < users.length; i++) {
-      const marketler = await Markets.findAll({
-        where: { userId: users[i].userId },
-      });
-      for (let j = 0; j < marketler.length; j++) {
-        markets.push(marketler[j]);
-      }
-    }
 
     let products = [];
-    for (let b = 0; b < markets.length; b++) {
-      const product = await Products.findAll({
-        where: { marketId: markets[b].marketId },
-        order: [["createdAt", "desc"]],
+
+    for (let i = 0; i < users.length; i++) {
+      const marketler = await Markets.findOne({
+        where: { userId: users[i].userId },
+      });
+      const follow = await Follows.findOne({
+        where: { userId, marketId: marketler.marketId },
       });
 
-      for (let z = 0; z < product.length; z++) {
-        products.push(product[z]);
+      markets[i] = {
+        marketler,
+        follow,
+      };
+
+      const product_ = await Products.findAll({
+        where: { marketId: marketler.marketId },
+        order: [["createdAt", "desc"]],
+      });
+      for (let c = 0; c < product_.length; c++) {
+        products.push(product_[c]);
       }
     }
 

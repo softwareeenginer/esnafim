@@ -4,22 +4,55 @@ import Layout from "../../constants/Layout";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { HStack, Icon, Image, Input, Spinner, Text, VStack } from "native-base";
 import { AntDesign, Feather } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 import CheckButton from "../Components/CheckButton";
 import SelectDropdown from "react-native-select-dropdown";
 import { post } from "../networking/Server";
+import * as ImagePicker from "expo-image-picker";
 
 const PersonalSettings = () => {
   const navigation: any = useNavigation();
   const countries = ["Egypt", "Canada", "Australia", "Ireland"];
 
   const [userInfo, setUserInfo]: any = React.useState(null);
+  const [name, setName]: any = React.useState(null);
+  const [surname, setSurname]: any = React.useState(null);
+  const [email, setEmail]: any = React.useState(null);
+  const [password, setPassword]: any = React.useState(null);
+
+  const [loadingImage, setLoadingImage] = React.useState(false);
+
   const [loading, setLoading] = React.useState(true);
 
-  React.useEffect(() => {
-    getProfile();
-  }, []);
+  useFocusEffect(
+    React.useCallback(() => {
+      getProfile();
+    }, [])
+  );
+
+  const handleSave = (
+    name: string = "",
+    surname: string = "",
+    email: string = "",
+    password: string = ""
+  ) => {
+    setLoading(true);
+    post("/api/profile/get/edit", {
+      name,
+      surname,
+      email,
+      password,
+    }).then((res: any) => {
+      console.log(res.result);
+      if (res.result) {
+        setLoading(false);
+        getProfile();
+      } else {
+        navigation.pop();
+      }
+    });
+  };
 
   const getProfile = () => {
     post("/api/profile/get").then((res: any) => {
@@ -39,6 +72,43 @@ const PersonalSettings = () => {
       </View>
     );
   }
+
+  const setImage = async () => {
+    let result: any = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+    });
+
+    if (result) {
+      setLoadingImage(true);
+      const imageUri = result.assets[0].uri;
+
+      const imageExtension = imageUri.substr(imageUri.lastIndexOf(".") + 1);
+
+      const formData: any = new FormData();
+
+      console.log(imageUri,`${new Date().getTime()}.${imageExtension}`,`${result.assets[0].type}/${imageExtension}`)
+
+      formData.append("image", {
+        uri: imageUri,
+        name: `${new Date().getTime()}.${imageExtension}`,
+        type: `${result.assets[0].type}/${imageExtension}`,
+      });
+      console.log("girdi1");
+      const data: any = await post("/api/profile/set-image");
+      console.log("1");
+      const info: any = await post("/api/profile/get");
+      console.log("2");
+      const image = info.info.image;
+      setUserInfo({ ...userInfo, image });
+      console.log(data);
+
+      setLoadingImage(false);
+      if (data?.result) {
+        console.log("başarıyla değiştirildi.");
+      }
+    }
+  };
 
   return (
     <SafeAreaView style={styles.SafeAreaView}>
@@ -61,14 +131,18 @@ const PersonalSettings = () => {
       </HStack>
       <ScrollView showsVerticalScrollIndicator={false}>
         <VStack space={3} alignItems={"center"} marginBottom={10}>
-          <TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              setImage();
+            }}
+          >
             <Image
               width={Layout.window.width * 0.7}
               height={Layout.window.height * 0.3}
               borderRadius={"2xl"}
               resizeMode="contain"
               alt=" "
-              source={{uri:userInfo?.image}}
+              source={{ uri: userInfo?.image }}
             />
             <Feather
               style={{ marginTop: -14, alignSelf: "flex-end" }}
@@ -93,6 +167,9 @@ const PersonalSettings = () => {
                   color="#000000"
                 />
               }
+              onChangeText={(text) => {
+                setName(text);
+              }}
             />
             <Input
               maxLength={40}
@@ -109,6 +186,9 @@ const PersonalSettings = () => {
                   color="#000000"
                 />
               }
+              onChangeText={(text) => {
+                setSurname(text);
+              }}
             />
           </HStack>
           <Input
@@ -126,6 +206,9 @@ const PersonalSettings = () => {
                 color="#000000"
               />
             }
+            onChangeText={(text) => {
+              setEmail(text);
+            }}
           />
           <HStack space={5}>
             <SelectDropdown
@@ -205,9 +288,14 @@ const PersonalSettings = () => {
                 color="#000000"
               />
             }
+            onChangeText={(text) => {
+              setPassword(text);
+            }}
           />
           <CheckButton
-            onPress={() => {}}
+            onPress={() => {
+              handleSave(name, surname, email, password);
+            }}
             text="Kaydet"
             color="#878BFF"
             navigation={navigation}

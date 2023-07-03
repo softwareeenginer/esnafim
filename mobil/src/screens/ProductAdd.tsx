@@ -1,13 +1,14 @@
 import React, { useState } from "react";
-import { ImageBackground, StyleSheet, Button } from "react-native";
+import { ImageBackground, StyleSheet, Button, View } from "react-native";
 import Layout from "../../constants/Layout";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { HStack, Box, Text, VStack, Input, Icon } from "native-base";
+import { HStack, Box, Text, VStack, Input, Icon, Spinner } from "native-base";
 import { AntDesign, Entypo, Feather, Ionicons } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 import DatePicker from "react-native-date-picker";
 import CheckButton from "../Components/CheckButton";
+import { post } from "../networking/Server";
 
 const ProductAdd = () => {
   const navigation: any = useNavigation();
@@ -15,6 +16,47 @@ const ProductAdd = () => {
   const [isNotification, setIsNotification] = useState(true);
   const [date, setDate] = useState(new Date());
   const [open, setOpen] = useState(false);
+  const [loading, setLoading] = React.useState(true);
+  const [price, setPrice]: any = React.useState(null);
+  const [name, setName]: any = React.useState(null);
+  const [description, setDescription]: any = React.useState(null);
+  const [howMany, setHowMany]: any = React.useState(null);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      handleSave(name, price, description, howMany);
+    }, [])
+  );
+  console.log(howMany);
+  const handleSave = (
+    name: string = "",
+    price: string = "",
+    description: string = "",
+    howMany: string = ""
+  ) => {
+    setLoading(true);
+    post("/api/profile/get/product-add", {
+      name,
+      price,
+      description,
+      howMany,
+    }).then((res: any) => {
+      if (res.result) {
+        setLoading(false);
+      } else {
+        navigation.pop();
+      }
+    });
+  };
+
+  if (loading) {
+    return (
+      <View style={{ alignItems: "center", justifyContent: "center", flex: 1 }}>
+        <Spinner size={22} color={"black"} />
+      </View>
+    );
+  }
+
   return (
     <SafeAreaView style={styles.SafeAreaView}>
       <HStack
@@ -84,6 +126,7 @@ const ProductAdd = () => {
                 height={8}
                 placeholder="  "
                 placeholderTextColor={"black"}
+                inputMode="decimal"
                 textAlign={"center"}
                 backgroundColor={"white"}
                 InputRightElement={
@@ -95,6 +138,9 @@ const ProductAdd = () => {
                     color="#000000"
                   />
                 }
+                onChangeText={(text) => {
+                  setPrice(text);
+                }}
               />
               <TouchableOpacity
                 onPressIn={() => {
@@ -166,8 +212,11 @@ const ProductAdd = () => {
                   color="#000000"
                 />
               }
+              onChangeText={(text) => {
+                setName(text);
+              }}
             />
-            <Input
+            {/* <Input
               maxLength={40}
               width={Layout.window.width * 0.9}
               height={8}
@@ -184,7 +233,7 @@ const ProductAdd = () => {
                   color="#000000"
                 />
               }
-            />
+            /> */}
             <Input
               maxLength={40}
               width={Layout.window.width * 0.9}
@@ -202,13 +251,15 @@ const ProductAdd = () => {
                   color="#000000"
                 />
               }
+              onChangeText={(text) => {
+                setHowMany(text);
+              }}
             />
             <Input
               maxLength={40}
               width={Layout.window.width * 0.9}
               height={8}
               placeholder="Açıklama"
-              inputMode="decimal"
               placeholderTextColor={"black"}
               backgroundColor={"white"}
               InputRightElement={
@@ -220,6 +271,9 @@ const ProductAdd = () => {
                   color="#000000"
                 />
               }
+              onChangeText={(text) => {
+                setDescription(text);
+              }}
             />
             <HStack
               width={Layout.window.width * 0.9}
@@ -230,7 +284,9 @@ const ProductAdd = () => {
                 Paylaşımı takipçilerime bildirim olarak gönder
               </Text>
               <TouchableOpacity
-              onPress={()=>{setIsNotification(!isNotification);}}
+                onPress={() => {
+                  setIsNotification(!isNotification);
+                }}
                 style={{
                   width: Layout.window.width * 0.15,
                   backgroundColor: "white",
@@ -241,12 +297,15 @@ const ProductAdd = () => {
                   width={5}
                   height={5}
                   borderRadius={"full"}
-                  background={isNotification==true?"#00C599":"#B3B4B3"}
-                  alignSelf={isNotification==true?"flex-end":"flex-start"}
+                  background={isNotification == true ? "#00C599" : "#B3B4B3"}
+                  alignSelf={isNotification == true ? "flex-end" : "flex-start"}
                 ></Box>
               </TouchableOpacity>
             </HStack>
             <CheckButton
+              onPress={() => {
+                handleSave(name, price, description);
+              }}
               text="Paylaş"
               color="#00C599"
               navigate="InfoPage"

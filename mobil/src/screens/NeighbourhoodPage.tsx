@@ -4,7 +4,7 @@ import Layout from "../../constants/Layout";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { HStack, Box, Text, VStack, Spinner } from "native-base";
 import { AntDesign, Entypo, Ionicons } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import {
   FlatList,
   ScrollView,
@@ -20,11 +20,27 @@ const NeighbourhoodPage = () => {
   const [productsInfo, setProductsInfo]: any = React.useState(null);
   const [neighbourhoodInfo, setneighbourhoodInfo]: any = React.useState(null);
   const [loading, setLoading] = React.useState(true);
-  React.useEffect(() => {
-    getMarkets();
-  }, []);
+  useFocusEffect(
+    React.useCallback(() => {
+      getMarkets();
+    }, [])
+  );
+
+  const postFollows = (marketId: number) => {
+    post("/api/follow/set/update", {
+      marketId,
+    }).then((res: any) => {
+      if (res.result) {
+        setLoading(false);
+        getMarkets();
+      } else {
+      }
+    });
+  };
+
   const getMarkets = () => {
     post("/api/market/get/location").then((res: any) => {
+      console.log(res)
       if (res.result) {
         setLoading(false);
         setMarketsInfo(res.markets);
@@ -64,7 +80,9 @@ const NeighbourhoodPage = () => {
         >
           <AntDesign name="left" size={20} color={"black"} />
         </TouchableOpacity>
-        <Text fontSize={20} bold>{neighbourhoodInfo?.name} </Text>
+        <Text fontSize={20} bold>
+          {neighbourhoodInfo?.name}{" "}
+        </Text>
         <TouchableOpacity
           style={{
             backgroundColor: "white",
@@ -80,20 +98,29 @@ const NeighbourhoodPage = () => {
       </HStack>
 
       <FlatList
-      showsVerticalScrollIndicator={false}
+        showsVerticalScrollIndicator={false}
         ListHeaderComponent={
           <>
-            {marketsInfo?.map((i: any, index: number) => (
-              <TouchableOpacity
-                onPress={() =>
-                  navigation.navigate("MarketDetail", { id: i.marketId })
-                }
-                key={index}
-                style={{ marginTop: 20, marginBottom: i == 12 ? 20 : 0 }}
-              >
-                <Market marketInfo={i} takip={i % 2 == 0 ? true : false} />
-              </TouchableOpacity>
-            ))}
+            {marketsInfo?.map((i: any, index: number) => {
+              console.log(i);
+              return (
+                <TouchableOpacity
+                  onPress={() =>
+                    navigation.navigate("MarketDetail", { id: i.marketler.marketId })
+                  }
+                  key={index}
+                  style={{ marginTop: 20, marginBottom: i == 12 ? 20 : 0 }}
+                >
+                  <Market
+                    marketInfo={i.marketler}
+                    status={i.follow.status}
+                    onPress={() => {
+                      postFollows(i.marketler.marketId);
+                    }}
+                  />
+                </TouchableOpacity>
+              );
+            })}
             <Text marginLeft={6} marginTop={5} fontSize={"md"} bold>
               Yeni Eklenen Ürünler
             </Text>
@@ -103,7 +130,7 @@ const NeighbourhoodPage = () => {
         style={{
           width: Layout.window.width * 0.9,
           alignSelf: "center",
-          marginBottom:"2%"
+          marginBottom: "2%",
         }}
         numColumns={2}
         data={productsInfo}

@@ -31,6 +31,16 @@ module.exports = function(sequelize, DataTypes) {
         model: 'markets',
         key: 'marketId'
       }
+    },
+    priceDiscount: {
+      type: DataTypes.STRING(20),
+      allowNull: true,
+      defaultValue: "1"
+    },
+    howMany: {
+      type: DataTypes.STRING(20),
+      allowNull: true,
+      defaultValue: "1"
     }
   }, {
     sequelize,

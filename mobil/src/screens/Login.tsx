@@ -34,6 +34,7 @@ const Login = () => {
   const handleLogin = (email: string = "", password: string = "") => {
     setLoading(true);
     post("login", { email, password }).then((res: any) => {
+      console.log(res);
       if (res.result) {
         MainStore.setToken(res.token);
         setLoading(false);

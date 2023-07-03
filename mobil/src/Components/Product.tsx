@@ -70,7 +70,7 @@ export default function Product(props: IProps) {
           <Text bold color={"#FF7B00"}>
             {props.productInfo?.price}
           </Text>
-          <Text fontSize={"xs"}>1 Adet</Text>
+          <Text fontSize={"xs"}>{props.productInfo?.howMany} A / Kg </Text>
           <Text fontSize={"xs"}>{props.productInfo?.name}</Text>
         </VStack>
       </HStack>

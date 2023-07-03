@@ -30,7 +30,9 @@ const MyMarket = () => {
   const [productsInfo, setProductsInfo]: any = React.useState(null);
   const [follows, setFollows]: any = React.useState(null);
   const [products, setProducts]: any = React.useState(null);
+  const [name, setName]: any = React.useState(null);
   const [loading, setLoading] = React.useState(true);
+  const marketId = marketInfo?.marketId;
 
   useFocusEffect(
     React.useCallback(() => {
@@ -38,6 +40,20 @@ const MyMarket = () => {
     }, [])
   );
 
+  const handleUpdate = (name: string = "") => {
+    setLoading(true);
+    post("/api/profile/get/market-edit", {
+      name,
+      marketId,
+    }).then((res: any) => {
+      if (res.result) {
+        setLoading(false);
+        getProfile();
+      } else {
+        navigation.pop();
+      }
+    });
+  };
   const getProfile = () => {
     post("/api/profile/get").then((res: any) => {
       if (res.result) {
@@ -165,9 +181,14 @@ const MyMarket = () => {
                   color="#000000"
                 />
               }
+              onChangeText={(text) => {
+                setName(text);
+              }}
             />
             <CheckButton
-              onPress={() => navigation.navigate("MyMarket")}
+              onPress={() => {
+                handleUpdate(name);
+              }}
               text="Güncelle"
               color="#FF7B00"
               navigation={navigation}
