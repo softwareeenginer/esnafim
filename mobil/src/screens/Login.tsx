@@ -37,6 +37,7 @@ const Login = () => {
       console.log(res);
       if (res.result) {
         MainStore.setToken(res.token);
+        MainStore.setType(res.user.type);
         setLoading(false);
         goPage(navigation, "HomeBottom", {}, false);
       } else {

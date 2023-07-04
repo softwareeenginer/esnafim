@@ -23,6 +23,7 @@ const ProfilePage = () => {
 
   const getProfile = () => {
     post("/api/profile/get").then((res: any) => {
+      console.log(res)
       if (res.result) {
         setLoading(false);
         setUserInfo(res.info);

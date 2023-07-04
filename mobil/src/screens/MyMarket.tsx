@@ -22,6 +22,7 @@ import {
 import Product from "../Components/Product";
 import CheckButton from "../Components/CheckButton";
 import { post } from "../networking/Server";
+import { MainStore } from "../../stores/MainStore";
 
 const MyMarket = () => {
   const navigation: any = useNavigation();
@@ -73,6 +74,23 @@ const MyMarket = () => {
     return (
       <View style={{ alignItems: "center", justifyContent: "center", flex: 1 }}>
         <Spinner size={22} color={"black"} />
+      </View>
+    );
+  }
+
+  if (MainStore.type == 2) {
+    return (
+      <View
+        style={{
+          alignItems: "center",
+          justifyContent: "center",
+          flex: 1,
+          backgroundColor: "white",
+        }}
+      >
+        <Text style={{ textAlign: "center", fontSize: 22, color: "black" }}>
+          Market ayarlarını görebilmeniz için satıcı olmanız gerekmektedir.
+        </Text>
       </View>
     );
   }

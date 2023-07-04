@@ -35,22 +35,26 @@ router.post("/get", async (req, res) => {
         where: { marketId: market.marketId },
       });
       productsCount = product;
+
+      const products = await Products.findAll({
+        where: { marketId: myMarket.marketId, status: 1 },
+      });
+
+      res.json({
+        result: true,
+        info,
+        myMarket,
+        followsCount,
+        productsCount,
+        products,
+      });
     } else {
       console.log("Alıcı Kullanıcı");
+      res.json({
+        result: true,
+        info,
+      });
     }
-
-    const products = await Products.findAll({
-      where: { marketId: myMarket.marketId, status: 1 },
-    });
-
-    res.json({
-      result: true,
-      info,
-      myMarket,
-      followsCount,
-      productsCount,
-      products,
-    });
   } catch (e) {
     res.json({
       error: e,
@@ -266,7 +270,6 @@ router.post("/get/product-add", async (req, res) => {
       };
       await Products.create(product);
       if (isNotification) {
-
         for (let i = 0; i < takipci.length; i++) {
           const notifi = {
             name: market.name,

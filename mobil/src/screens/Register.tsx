@@ -19,37 +19,81 @@ import CheckButton from "../Components/CheckButton";
 import { useNavigation } from "@react-navigation/native";
 import { ScrollView } from "react-native-gesture-handler";
 import axios from "axios";
+import { post } from "../networking/Server";
 
-const Register = (props:any) => {
-  const navigation = useNavigation();
+const Register = (props: any) => {
+  const navigation: any = useNavigation();
+
   const [isCitys, setIsCitys] = useState([]);
-  const [choice] = React.useState(props.route.params.choice);
-  type city = {
-    id: number;
-    title: string;
-  };
-  useEffect(() => {
-    getCountries();
-  }, []);
+  const [isD, setIsD] = useState([]);
+  const [isN, setIsN] = useState([]);
+  const [selectedC, isSelectedC] = useState("");
+  const [selectedD, isSelectedD] = useState("");
+  const [selectedN, isSelectedN] = useState("");
 
-  const getCountries = () => {
-    axios({
-      method: "get",
-      headers: {
-        "X-CSCAPI-KEY": "",
-      },
-      url: "https://api.countrystatecity.in/v1/countries",
-      //data: {
-      ///  firstName: 'Fred',
-      //  lastName: 'Flintstone'
-      //}
-    }).then((res) => {
-      console.log(res);
+  // name, surname, email, password, code, type
+  const [name, setName] = useState("");
+  const [surname, setSurname] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [rePassword, setRePassword] = useState("");
+  // code -> selectedN
+  // type -> choice
+
+  // name, surname, email, password, code, type
+  const handleLogin = () => {
+    post("register", {
+      name: name,
+      surname: surname,
+      email: email,
+      password: password,
+      code: selectedN,
+      type: props.route.params.choice,
+    }).then((res: any) => {
+      console.log(res)
+      if (res.result) {
+        navigation.navigate("Login");
+      } else {
+        console.log("kayıt yapılamadı");
+      }
     });
   };
+
+  useEffect(() => {
+    getLocations();
+  }, []);
+
+  // ilçe getirme kodu
+  useEffect(() => {
+    post("location", { status: 1, code: selectedC }).then((res: any) => {
+      if (res.result) {
+        setIsD(res.districts);
+      }
+    });
+  }, [selectedC]);
+
+  // mahalle getirme kodu
+  useEffect(() => {
+    post("location", { status: 2, code: selectedD }).then((res: any) => {
+      if (res.result) {
+        setIsN(res.neighborhoods);
+      }
+    });
+  }, [selectedD]);
+
+  const getLocations = () => {
+    post("location", { status: 0, code: 1 }).then((res: any) => {
+      if (res.result) {
+        setIsCitys(res.citys);
+      } else {
+        console.log("hata");
+        //navigation.pop();
+      }
+    });
+  };
+
   return (
     <SafeAreaView style={styles.SafeAreaView}>
-      <ScrollView>
         <View style={styles.Page}>
           <ImageBackground
             source={require("../../assets/images/backIcon.png")}
@@ -69,94 +113,90 @@ const Register = (props:any) => {
               Kayıt Ol
             </Text>
             <ScrollView>
-              {isCitys.map((city: any) => {
+              {/*isCitys.map((city: any, index: number) => {
                 return (
-                  <VStack key={city.id}>
-                    <Text color={"black"}>{city.title}</Text>
+                  <VStack key={index}>
+                    <Text color={"black"}>{city.name}</Text>
                   </VStack>
                 );
-              })}
-              <SelectDropdown
-                data={isCitys}
-                defaultButtonText={"İl Seç"}
-                buttonStyle={{
-                  backgroundColor: "white",
-                  borderBottomColor: "#878BFF",
-                  borderBottomWidth: 1,
-                  width: Layout.window.width * 0.7,
+              })*/}
+              <Select
+                // selectedValue={service}
+                minWidth="200"
+                accessibilityLabel="Şehir Seç"
+                placeholder="Şehir Seç"
+                _selectedItem={{
+                  bg: "teal.600",
+                  endIcon: <CheckIcon size="5" />,
                 }}
-                dropdownOverlayColor="rgba(0,0,0,0.7)"
-                buttonTextStyle={{
-                  fontSize: 12,
-                  position: "absolute",
-                  right: 5,
+                mt={1}
+                onValueChange={(itemValue: any) => isSelectedC(itemValue)}
+              >
+                {isCitys?.map((item: any, index) => {
+                  return (
+                    <Select.Item
+                      key={index}
+                      label={item.name}
+                      value={item.sehir_key}
+                    />
+                  );
+                })}
+              </Select>
+
+              <Select
+                // selectedValue={service}
+                minWidth="200"
+                accessibilityLabel="İlçe Seç"
+                placeholder="İlçe Seç"
+                _selectedItem={{
+                  bg: "teal.600",
+                  endIcon: <CheckIcon size="5" />,
                 }}
-                onSelect={(selectedItem, index) => {
-                  console.log(selectedItem, index);
+                mt={1}
+                onValueChange={(itemValue: any) => isSelectedD(itemValue)}
+              >
+                {isD?.map((item: any, index) => {
+                  return (
+                    <Select.Item
+                      key={index}
+                      label={item.name}
+                      value={item.ilce_key}
+                    />
+                  );
+                })}
+              </Select>
+
+              <Select
+                // selectedValue={service}
+                minWidth="200"
+                accessibilityLabel="Mahalle Seç"
+                placeholder="Mahalle Seç"
+                _selectedItem={{
+                  bg: "teal.600",
+                  endIcon: <CheckIcon size="5" />,
                 }}
-                buttonTextAfterSelection={(selectedItem, index) => {
-                  return selectedItem;
-                }}
-                rowTextForSelection={(item, index) => {
-                  return item;
-                }}
-              />
-              <SelectDropdown
-                data={isCitys}
-                defaultButtonText="İlçe Seç"
-                dropdownOverlayColor="rgba(0,0,0,0.7)"
-                buttonTextStyle={{
-                  fontSize: 12,
-                  position: "absolute",
-                  right: 5,
-                }}
-                buttonStyle={{
-                  backgroundColor: "white",
-                  borderBottomColor: "#878BFF",
-                  borderBottomWidth: 1,
-                  width: Layout.window.width * 0.7,
-                }}
-                onSelect={(selectedItem, index) => {
-                  console.log(selectedItem, index);
-                }}
-                buttonTextAfterSelection={(selectedItem, index) => {
-                  return selectedItem;
-                }}
-                rowTextForSelection={(item, index) => {
-                  return item;
-                }}
-              />
-              <SelectDropdown
-                data={isCitys}
-                defaultButtonText="Mahalle Seç"
-                dropdownOverlayColor="rgba(0,0,0,0.7)"
-                buttonTextStyle={{
-                  fontSize: 12,
-                  position: "absolute",
-                  right: 5,
-                }}
-                buttonStyle={{
-                  backgroundColor: "white",
-                  borderBottomColor: "#878BFF",
-                  borderBottomWidth: 1,
-                  width: Layout.window.width * 0.7,
-                }}
-                onSelect={(selectedItem, index) => {
-                  console.log(selectedItem, index);
-                }}
-                buttonTextAfterSelection={(selectedItem, index) => {
-                  return selectedItem;
-                }}
-                rowTextForSelection={(item, index) => {
-                  return item;
-                }}
-              />
+                mt={1}
+                onValueChange={(itemValue: any) => isSelectedN(itemValue)}
+              >
+                {isN?.map((item: any, index) => {
+                  return (
+                    <Select.Item
+                      key={index}
+                      label={item.name}
+                      value={item.mahalle_key}
+                    />
+                  );
+                })}
+              </Select>
 
               <Input
                 variant="underlined"
                 numberOfLines={4}
                 maxLength={40}
-                placeholder="İşletme İsmi"
+                placeholder="İsim"
+                onChangeText={(text: string) => {
+                  setName(text);
+                }}
                 InputLeftElement={
                   <Icon
                     as={<SimpleLineIcons name="bag" />}
@@ -167,11 +207,35 @@ const Register = (props:any) => {
                   />
                 }
               />
+
+              <Input
+                variant="underlined"
+                numberOfLines={4}
+                maxLength={40}
+                placeholder="Soy isim"
+                onChangeText={(text: string) => {
+                  setSurname(text);
+                }}
+                InputLeftElement={
+                  <Icon
+                    as={<SimpleLineIcons name="bag" />}
+                    marginRight={2}
+                    size={5}
+                    ml="2"
+                    color="#000000"
+                  />
+                }
+              />
+
               <Input
                 variant="underlined"
                 numberOfLines={4}
                 maxLength={40}
                 placeholder="E-Posta"
+                keyboardType="email-address"
+                onChangeText={(text) => {
+                  setEmail(text);
+                }}
                 InputLeftElement={
                   <Icon
                     as={<Feather name="mail" />}
@@ -187,6 +251,10 @@ const Register = (props:any) => {
                 numberOfLines={4}
                 keyboardType="numeric"
                 maxLength={40}
+                secureTextEntry
+                onChangeText={(text) => {
+                  setPassword(text);
+                }}
                 placeholder="Şifre"
                 InputLeftElement={
                   <Icon
@@ -203,7 +271,11 @@ const Register = (props:any) => {
                 numberOfLines={4}
                 keyboardType="numeric"
                 maxLength={40}
+                secureTextEntry
                 placeholder="Şifre Tekrar"
+                onChangeText={(text) => {
+                  setRePassword(text);
+                }}
                 InputLeftElement={
                   <Icon
                     as={<AntDesign name="unlock" />}
@@ -219,7 +291,7 @@ const Register = (props:any) => {
 
           <VStack marginTop={3} space={5}>
             <CheckButton
-              onPress={() => console.log("Regsiter")}
+              onPress={() => {handleLogin()}}
               navigation={navigation}
               navigate="Login"
               text="Kayıt Ol"
@@ -241,7 +313,6 @@ const Register = (props:any) => {
             />
           </VStack>
         </View>
-      </ScrollView>
     </SafeAreaView>
   );
 };

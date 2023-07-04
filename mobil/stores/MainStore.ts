@@ -15,6 +15,11 @@ class MainStoreC {
         this.token = set;
     }
 
+    @persist type = 0;
+    setType(set:any){
+        this.type=set;
+    }
+
 }
 
 

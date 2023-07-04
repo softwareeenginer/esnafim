@@ -144,20 +144,8 @@ db.Districts.belongsTo(db.Adress, {
   onDelete: "cascade",
   onUpdate: "cascade",
 });
-db.Adress.hasMany(db.Neighborhoods, {
-  foreignKey: "adressId",
-  onDelete: "cascade",
-  onUpdate: "cascade",
-});
-db.Neighborhoods.belongsTo(db.Adress, {
-  foreignKey: "adressId",
-  onDelete: "cascade",
-  onUpdate: "cascade",
-});
+
 */
-
-
-
 
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;

@@ -70,7 +70,7 @@ router.post("/get", async (req, res) => {
         address,
         product,
         products,
-        follow
+        follow,
       };
     }
 
@@ -145,11 +145,13 @@ router.post("/get/location", async (req, res) => {
     let user = await Users.findOne({ where: { userId: userId } });
     //kullanıcının adresi
     let adress = await Adress.findOne({ where: { adressId: user.adressId } });
+    console.log(adress);
 
     //kullanıcının mahallesi
     let mahalle = await Neighborhoods.findOne({
       where: { mahalleId: adress.mahalleId },
     });
+    console.log(mahalle);
     //kullanıcının mahallesi ile aynı mahallesi olan adresler
     const adressler = await Adress.findOne({
       where: { mahalleId: mahalle.mahalleId },
@@ -160,18 +162,27 @@ router.post("/get/location", async (req, res) => {
     const users = await Users.findAll({
       where: { adressId: adressler.adressId },
     });
+
     let markets = [];
 
     let products = [];
 
     for (let i = 0; i < users.length; i++) {
       const marketler = await Markets.findOne({
-        where: { userId: users[i].userId },
+        where: { userId: users[i]?.userId },
       });
-      console.log(marketler.marketId);
+
+      if (!marketler) {
+        return res.json({
+          result: true,
+          markets: [],
+          products: [],
+          mahalle: {},
+        });
+      }
 
       const follow = await Follows.findOne({
-        where: { marketId: marketler.marketId },
+        where: { marketId: marketler?.marketId },
       });
       markets[i] = {
         marketler,
