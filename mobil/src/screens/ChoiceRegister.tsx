@@ -8,6 +8,8 @@ import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 
 const ChoiceRegister = () => {
   const navigation: any = useNavigation();
+
+  const [choice, setChoice] = React.useState(0);
   return (
     <SafeAreaView style={styles.SafeAreaView}>
       <ScrollView showsVerticalScrollIndicator={false}>
@@ -22,7 +24,12 @@ const ChoiceRegister = () => {
 
         <View style={styles.FormArea}>
           <View style={{ marginTop: -Layout.window.height * 0.2 }}>
-            <TouchableOpacity onPress={() => navigation.navigate("Register")}>
+            <TouchableOpacity
+              onPress={() => {
+                setChoice(1);
+                navigation.navigate("Register",{choice:choice})
+              }}
+            >
               <Image
                 style={{ width: Layout.window.width * 0.9 }}
                 resizeMode="contain"
@@ -30,7 +37,10 @@ const ChoiceRegister = () => {
               />
             </TouchableOpacity>
             <TouchableOpacity
-              onPress={() => navigation.navigate("Register")}
+              onPress={() => {
+                setChoice(2);
+                navigation.navigate("Register",{choice:choice})
+              }}
               style={{ marginTop: -Layout.window.height * 0.1 }}
             >
               <Image
@@ -89,7 +99,7 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
     alignItems: "center",
-    paddingBottom:Layout.window.height*0.1
+    paddingBottom: Layout.window.height * 0.1,
   },
   InputArea: {
     backgroundColor: "#ffffff",

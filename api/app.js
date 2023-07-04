@@ -13,6 +13,7 @@ const indexRouter = require("./routes/index");
 const marketRouter = require("./routes/market");
 const profileRouter = require("./routes/profile");
 const followRouter = require("./routes/follow");
+const notificaionRouter = require("./routes/notification");
 
 // Config
 const config = require("./config");
@@ -41,6 +42,7 @@ app.use("/api", verifyToken);
 app.use("/api/market", marketRouter);
 app.use("/api/profile", profileRouter);
 app.use("/api/follow", followRouter);
+app.use("/api/notification", notificaionRouter);
 // catch 404 and forward to error handler
 
 app.use((req, res, next) => {

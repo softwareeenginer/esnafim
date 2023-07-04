@@ -113,7 +113,7 @@ const HomePage = () => {
             >
               <Market
                 marketInfo={i}
-                status={i.follow.status}
+                status={i.follow ? i.follow.status : 0}
                 onPress={() => {
                   postFollows(i.marketId);
                 }}

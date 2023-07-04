@@ -63,14 +63,14 @@ module.exports = function(sequelize, DataTypes) {
         ]
       },
       {
-        name: "adressId",
+        name: "users_adressId_foreign_idx",
         using: "BTREE",
         fields: [
           { name: "adressId" },
         ]
       },
       {
-        name: "users_adressId_foreign_idx",
+        name: "adressId",
         using: "BTREE",
         fields: [
           { name: "adressId" },

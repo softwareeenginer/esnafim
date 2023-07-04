@@ -7,22 +7,6 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false,
       primaryKey: true
     },
-    sehirId: {
-      type: DataTypes.INTEGER,
-      allowNull: true,
-      references: {
-        model: 'citys',
-        key: 'sehirId'
-      }
-    },
-    ilceId: {
-      type: DataTypes.INTEGER,
-      allowNull: true,
-      references: {
-        model: 'districts',
-        key: 'ilceId'
-      }
-    },
     mahalleId: {
       type: DataTypes.INTEGER,
       allowNull: true,
@@ -42,20 +26,6 @@ module.exports = function(sequelize, DataTypes) {
         using: "BTREE",
         fields: [
           { name: "adressId" },
-        ]
-      },
-      {
-        name: "sehirId",
-        using: "BTREE",
-        fields: [
-          { name: "sehirId" },
-        ]
-      },
-      {
-        name: "ilceId",
-        using: "BTREE",
-        fields: [
-          { name: "ilceId" },
         ]
       },
       {

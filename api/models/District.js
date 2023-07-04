@@ -13,6 +13,14 @@ module.exports = function (sequelize, DataTypes) {
         type: DataTypes.STRING(256),
         allowNull: false,
       },
+      ilce_key: {
+        type: DataTypes.STRING(256),
+        allowNull: false,
+      },
+      ilce_sehirkey: {
+        type: DataTypes.STRING(256),
+        allowNull: false,
+      },
     },
     {
       sequelize,

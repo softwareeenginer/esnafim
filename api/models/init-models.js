@@ -22,14 +22,6 @@ function initModels(sequelize) {
 
   Users.belongsTo(Adress, { as: "adress", foreignKey: "adressId"});
   Adress.hasMany(Users, { as: "users", foreignKey: "adressId"});
-  Adress.belongsTo(Citys, { as: "sehir", foreignKey: "sehirId"});
-  Citys.hasMany(Adress, { as: "adresses", foreignKey: "sehirId"});
-  Districts.belongsTo(Citys, { as: "sehir", foreignKey: "sehirId"});
-  Citys.hasMany(Districts, { as: "districts", foreignKey: "sehirId"});
-  Adress.belongsTo(Districts, { as: "ilce", foreignKey: "ilceId"});
-  Districts.hasMany(Adress, { as: "adresses", foreignKey: "ilceId"});
-  Neighborhoods.belongsTo(Districts, { as: "ilce", foreignKey: "ilceId"});
-  Districts.hasMany(Neighborhoods, { as: "neighborhoods", foreignKey: "ilceId"});
   Follows.belongsTo(Markets, { as: "market", foreignKey: "marketId"});
   Markets.hasMany(Follows, { as: "follows", foreignKey: "marketId"});
   Notifications.belongsTo(Markets, { as: "market", foreignKey: "marketId"});

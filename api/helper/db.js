@@ -96,13 +96,13 @@ db.Follows.belongsTo(db.Markets, {
   onUpdate: "cascade",
 });
 
-db.Citys.hasMany(db.Districts, {
-  foreignKey: "sehirId",
+db.Neighborhoods.hasMany(db.Adress, {
+  foreignKey: "mahalleId",
   onDelete: "cascade",
   onUpdate: "cascade",
 });
-db.Districts.belongsTo(db.Citys, {
-  foreignKey: "sehirId",
+db.Adress.belongsTo(db.Neighborhoods, {
+  foreignKey: "mahalleId",
   onDelete: "cascade",
   onUpdate: "cascade",
 });

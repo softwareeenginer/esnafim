@@ -10,6 +10,10 @@ module.exports = function(sequelize, DataTypes) {
     name: {
       type: DataTypes.STRING(256),
       allowNull: false
+    },
+    sehir_key: {
+      type: DataTypes.STRING(256),
+      allowNull: false
     }
   }, {
     sequelize,

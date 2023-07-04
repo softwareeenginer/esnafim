@@ -20,9 +20,10 @@ import { useNavigation } from "@react-navigation/native";
 import { ScrollView } from "react-native-gesture-handler";
 import axios from "axios";
 
-const Register = () => {
+const Register = (props:any) => {
   const navigation = useNavigation();
   const [isCitys, setIsCitys] = useState([]);
+  const [choice] = React.useState(props.route.params.choice);
   type city = {
     id: number;
     title: string;

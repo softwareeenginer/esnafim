@@ -2,16 +2,45 @@ import React from "react";
 import { ImageBackground, StyleSheet, View } from "react-native";
 import Layout from "../../constants/Layout";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { HStack, Box, Text, VStack } from "native-base";
+import { HStack, Box, Text, VStack, Spinner } from "native-base";
 import { AntDesign, Entypo, Ionicons } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 import Product from "../Components/Product";
 import Market from "../Components/Market";
 import Notifications from "../Components/Notifications";
+import { post } from "../networking/Server";
 
 const NotificationsPage = () => {
   const navigation: any = useNavigation();
+
+  const [notificationsInfo, setNotificationsInfo]: any = React.useState(null);
+  const [loading, setLoading] = React.useState(true);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      getNotifications();
+    }, [])
+  );
+
+  const getNotifications = () => {
+    post("/api/notification/get").then((res: any) => {
+      if (res.result) {
+        setLoading(false);
+        setNotificationsInfo(res.notifications);
+      } else {
+        //navigation.pop();
+      }
+    });
+  };
+
+  if (loading) {
+    return (
+      <View style={{ alignItems: "center", justifyContent: "center", flex: 1 }}>
+        <Spinner size={22} color={"black"} />
+      </View>
+    );
+  }
   return (
     <SafeAreaView style={styles.SafeAreaView}>
       <HStack
@@ -47,11 +76,17 @@ const NotificationsPage = () => {
         </TouchableOpacity>
       </HStack>
       <ScrollView showsVerticalScrollIndicator={false}>
-        {[1, 2, 3, 4, 5].map((i) => (
-          <VStack key={i} marginBottom={i==5?10:0}>
-            <Notifications/>
-          </VStack>
-        ))}
+        {notificationsInfo?.map((i: any, index: number) => {
+          return (
+            <TouchableOpacity
+              onPress={() => {}}
+              key={index}
+              style={{ marginBottom: i == 12 ? 20 : 0 }}
+            >
+              <Notifications notificationInfo={i}/>
+            </TouchableOpacity>
+          );
+        })}
       </ScrollView>
     </SafeAreaView>
   );

@@ -46,15 +46,15 @@ router.post("/get", async (req, res) => {
         where: { adressId: user_.adressId },
       });
 
-      const city = await Citys.findOne({
-        where: { sehirId: adress_.sehirId },
-      });
+      // const city = await Citys.findOne({
+      //   where: { sehirId: adress_.sehirId },
+      // });
 
-      const district = await Districts.findOne({
-        where: {
-          ilceId: adress_.ilceId,
-        },
-      });
+      // const district = await Districts.findOne({
+      //   where: {
+      //     ilceId: adress_.ilceId,
+      //   },
+      // });
 
       const neighborhood = await Neighborhoods.findOne({
         wher: {
@@ -62,7 +62,7 @@ router.post("/get", async (req, res) => {
         },
       });
 
-      const address = city.name + " " + district.name + " " + neighborhood.name;
+      const address = neighborhood.name;
 
       markets[i] = {
         ...markets[i].dataValues,
@@ -70,7 +70,7 @@ router.post("/get", async (req, res) => {
         address,
         product,
         products,
-        follow,
+        follow
       };
     }
 
@@ -143,15 +143,18 @@ router.post("/get/location", async (req, res) => {
   const { userId } = req.decoded;
   try {
     let user = await Users.findOne({ where: { userId: userId } });
+    //kullanıcının adresi
     let adress = await Adress.findOne({ where: { adressId: user.adressId } });
 
+    //kullanıcının mahallesi
     let mahalle = await Neighborhoods.findOne({
       where: { mahalleId: adress.mahalleId },
     });
+    //kullanıcının mahallesi ile aynı mahallesi olan adresler
     const adressler = await Adress.findOne({
       where: { mahalleId: mahalle.mahalleId },
     });
-    console.log("mahalle : ", adressler.adressId);
+    // console.log("mahalle : ", adressler.adressId);
 
     // market sahipleri
     const users = await Users.findAll({
@@ -165,17 +168,18 @@ router.post("/get/location", async (req, res) => {
       const marketler = await Markets.findOne({
         where: { userId: users[i].userId },
       });
-      const follow = await Follows.findOne({
-        where: { userId, marketId: marketler.marketId },
-      });
+      console.log(marketler.marketId);
 
+      const follow = await Follows.findOne({
+        where: { marketId: marketler.marketId },
+      });
       markets[i] = {
         marketler,
         follow,
       };
 
       const product_ = await Products.findAll({
-        where: { marketId: marketler.marketId, status:1 },
+        where: { marketId: marketler.marketId, status: 1 },
         order: [["createdAt", "desc"]],
       });
       for (let c = 0; c < product_.length; c++) {

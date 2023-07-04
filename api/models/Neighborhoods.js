@@ -11,13 +11,13 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.STRING(256),
       allowNull: false
     },
-    ilceId: {
-      type: DataTypes.INTEGER,
-      allowNull: true,
-      references: {
-        model: 'districts',
-        key: 'ilceId'
-      }
+    mahalle_key: {
+      type: DataTypes.STRING(256),
+      allowNull: false
+    },
+    mahalle_ilcekey: {
+      type: DataTypes.STRING(256),
+      allowNull: false
     }
   }, {
     sequelize,
@@ -30,20 +30,6 @@ module.exports = function(sequelize, DataTypes) {
         using: "BTREE",
         fields: [
           { name: "mahalleId" },
-        ]
-      },
-      {
-        name: "neighborhoods_ilceId_foreign_idx",
-        using: "BTREE",
-        fields: [
-          { name: "ilceId" },
-        ]
-      },
-      {
-        name: "ilceId",
-        using: "BTREE",
-        fields: [
-          { name: "ilceId" },
         ]
       },
     ]

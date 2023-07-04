@@ -221,7 +221,6 @@ router.post("/get/product-edit", async (req, res) => {
     } else {
       console.log("hata");
     }
-    console.log(urun.name);
     res.json({
       result: true,
     });
@@ -240,7 +239,6 @@ router.post("/get/product-add", async (req, res) => {
   const { description } = req.body;
   const { howMany } = req.body;
   const { isNotification, isDiscount } = req.body;
-  console.log(isNotification);
 
   const market = await Markets.findOne({
     where: { userId },
@@ -249,7 +247,6 @@ router.post("/get/product-add", async (req, res) => {
   const takipci = await Follows.findAll({
     where: { marketId },
   });
-  console.log(takipci.length);
   try {
     const market = await Markets.findOne({
       where: { userId },
@@ -269,7 +266,6 @@ router.post("/get/product-add", async (req, res) => {
       };
       await Products.create(product);
       if (isNotification) {
-        console.log(product);
 
         for (let i = 0; i < takipci.length; i++) {
           const notifi = {

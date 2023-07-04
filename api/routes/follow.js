@@ -39,7 +39,6 @@ router.post("/get", async (req, res) => {
 router.post("/set/update", async (req, res) => {
   const { userId } = req.decoded;
   const { marketId } = req.body;
-  console.log(userId, marketId);
   try {
     const result = await Follows.findOne({
       where: { userId, marketId },
