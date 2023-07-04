@@ -1,7 +1,13 @@
 const express = require("express");
 const router = express.Router();
 const upload = require("../helper/upload");
-const { Users, Markets, Follows, Products } = require("../helper/db");
+const {
+  Users,
+  Markets,
+  Follows,
+  Products,
+  Notifications,
+} = require("../helper/db");
 const bcrypt = require("bcryptjs");
 const config = require("../config");
 
@@ -34,7 +40,7 @@ router.post("/get", async (req, res) => {
     }
 
     const products = await Products.findAll({
-      where: { marketId: myMarket.marketId, status:1 },
+      where: { marketId: myMarket.marketId, status: 1 },
     });
 
     res.json({
@@ -229,11 +235,21 @@ router.post("/get/product-edit", async (req, res) => {
 router.post("/get/product-add", async (req, res) => {
   const { userId } = req.decoded;
   const { price } = req.body;
-  const { priceDiscount } = req.body;
+  const { priceDisc } = req.body;
   const { name } = req.body;
   const { description } = req.body;
   const { howMany } = req.body;
+  const { isNotification, isDiscount } = req.body;
+  console.log(isNotification);
 
+  const market = await Markets.findOne({
+    where: { userId },
+  });
+  const marketId = market.marketId;
+  const takipci = await Follows.findAll({
+    where: { marketId },
+  });
+  console.log(takipci.length);
   try {
     const market = await Markets.findOne({
       where: { userId },
@@ -249,8 +265,26 @@ router.post("/get/product-add", async (req, res) => {
           "https://e7.pngegg.com/pngimages/426/859/png-clipart-computer-icons-user-membership-black-area.png",
 
         howMany,
+        status: 1,
       };
       await Products.create(product);
+      if (isNotification) {
+        console.log(product);
+
+        for (let i = 0; i < takipci.length; i++) {
+          const notifi = {
+            name: market.name,
+            marketId: marketId,
+            userId: takipci[i].userId,
+            product: name,
+            priceProduct: price,
+            priceDiscount: isDiscount == true ? priceDisc : "NULL",
+          };
+          await Notifications.create(notifi);
+        }
+      } else {
+        console.log("Bildirim gönderimi olmayacak");
+      }
     }
 
     res.json({

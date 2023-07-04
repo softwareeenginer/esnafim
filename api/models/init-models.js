@@ -32,6 +32,8 @@ function initModels(sequelize) {
   Districts.hasMany(Neighborhoods, { as: "neighborhoods", foreignKey: "ilceId"});
   Follows.belongsTo(Markets, { as: "market", foreignKey: "marketId"});
   Markets.hasMany(Follows, { as: "follows", foreignKey: "marketId"});
+  Notifications.belongsTo(Markets, { as: "market", foreignKey: "marketId"});
+  Markets.hasMany(Notifications, { as: "notifications", foreignKey: "marketId"});
   Products.belongsTo(Markets, { as: "market", foreignKey: "marketId"});
   Markets.hasMany(Products, { as: "products", foreignKey: "marketId"});
   Adress.belongsTo(Neighborhoods, { as: "mahalle", foreignKey: "mahalleId"});
@@ -40,6 +42,8 @@ function initModels(sequelize) {
   Users.hasMany(Follows, { as: "follows", foreignKey: "userId"});
   Markets.belongsTo(Users, { as: "user", foreignKey: "userId"});
   Users.hasMany(Markets, { as: "markets", foreignKey: "userId"});
+  Notifications.belongsTo(Users, { as: "user", foreignKey: "userId"});
+  Users.hasMany(Notifications, { as: "notifications", foreignKey: "userId"});
 
   return {
     Adress,

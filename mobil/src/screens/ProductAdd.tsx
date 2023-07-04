@@ -18,21 +18,32 @@ const ProductAdd = () => {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = React.useState(true);
   const [price, setPrice]: any = React.useState(null);
+  const [priceDisc, setPriceDisc]: any = React.useState(null);
   const [name, setName]: any = React.useState(null);
   const [description, setDescription]: any = React.useState(null);
   const [howMany, setHowMany]: any = React.useState(null);
 
   useFocusEffect(
     React.useCallback(() => {
-      handleSave(name, price, description, howMany);
+      handleSave(
+        name,
+        price,
+        description,
+        howMany,
+        isNotification,
+        priceDisc,
+        isDiscount
+      );
     }, [])
   );
-  console.log(howMany);
   const handleSave = (
     name: string = "",
     price: string = "",
     description: string = "",
-    howMany: string = ""
+    howMany: string = "",
+    isNotification: any,
+    priceDisc: string = "",
+    isDiscount: any
   ) => {
     setLoading(true);
     post("/api/profile/get/product-add", {
@@ -40,6 +51,9 @@ const ProductAdd = () => {
       price,
       description,
       howMany,
+      isNotification,
+      priceDisc,
+      isDiscount,
     }).then((res: any) => {
       if (res.result) {
         setLoading(false);
@@ -169,6 +183,9 @@ const ProductAdd = () => {
                   placeholderTextColor={"black"}
                   textAlign={"center"}
                   backgroundColor={"white"}
+                  onChangeText={(text) => {
+                    setPriceDisc(text);
+                  }}
                 />
               ) : (
                 <></>
@@ -304,7 +321,15 @@ const ProductAdd = () => {
             </HStack>
             <CheckButton
               onPress={() => {
-                handleSave(name, price, description);
+                handleSave(
+                  name,
+                  price,
+                  description,
+                  howMany,
+                  isNotification,
+                  priceDisc,
+                  isDiscount
+                );
               }}
               text="Paylaş"
               color="#00C599"

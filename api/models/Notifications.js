@@ -10,6 +10,34 @@ module.exports = function(sequelize, DataTypes) {
     name: {
       type: DataTypes.STRING(256),
       allowNull: false
+    },
+    marketId: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      references: {
+        model: 'markets',
+        key: 'marketId'
+      }
+    },
+    userId: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      references: {
+        model: 'users',
+        key: 'userId'
+      }
+    },
+    product: {
+      type: DataTypes.STRING(256),
+      allowNull: true
+    },
+    priceProduct: {
+      type: DataTypes.STRING(256),
+      allowNull: true
+    },
+    priceDiscount: {
+      type: DataTypes.STRING(256),
+      allowNull: true
     }
   }, {
     sequelize,
@@ -22,6 +50,20 @@ module.exports = function(sequelize, DataTypes) {
         using: "BTREE",
         fields: [
           { name: "bildirimId" },
+        ]
+      },
+      {
+        name: "marketId",
+        using: "BTREE",
+        fields: [
+          { name: "marketId" },
+        ]
+      },
+      {
+        name: "userId",
+        using: "BTREE",
+        fields: [
+          { name: "userId" },
         ]
       },
     ]
