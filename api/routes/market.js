@@ -175,7 +175,7 @@ router.post("/get/location", async (req, res) => {
       };
 
       const product_ = await Products.findAll({
-        where: { marketId: marketler.marketId },
+        where: { marketId: marketler.marketId, status:1 },
         order: [["createdAt", "desc"]],
       });
       for (let c = 0; c < product_.length; c++) {

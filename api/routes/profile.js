@@ -29,14 +29,12 @@ router.post("/get", async (req, res) => {
         where: { marketId: market.marketId },
       });
       productsCount = product;
-
-      console.log(product);
     } else {
       console.log("Alıcı Kullanıcı");
     }
 
     const products = await Products.findAll({
-      where: { marketId: myMarket.marketId },
+      where: { marketId: myMarket.marketId, status:1 },
     });
 
     res.json({
@@ -117,9 +115,7 @@ router.post("/get/edit", async (req, res) => {
       );
     }
     if (password) {
-      console.log(user.password);
       const pass = await bcrypt.hash(password, 10);
-      console.log(pass);
       await Users.update(
         {
           password: pass,
@@ -189,7 +185,6 @@ router.post("/get/product-edit", async (req, res) => {
   const { name } = req.body;
   const { description } = req.body;
 
-  console.log(name);
   try {
     let urun = await Products.findOne({ where: { urunId } });
 
@@ -239,7 +234,6 @@ router.post("/get/product-add", async (req, res) => {
   const { description } = req.body;
   const { howMany } = req.body;
 
-  console.log(howMany);
   try {
     const market = await Markets.findOne({
       where: { userId },
@@ -255,9 +249,34 @@ router.post("/get/product-add", async (req, res) => {
           "https://e7.pngegg.com/pngimages/426/859/png-clipart-computer-icons-user-membership-black-area.png",
 
         howMany,
-  
       };
       await Products.create(product);
+    }
+
+    res.json({
+      result: true,
+    });
+  } catch (e) {
+    res.json({
+      error: e,
+    });
+  }
+});
+
+router.post("/get/product-delete", async (req, res) => {
+  const { userId } = req.decoded;
+  const { urunId } = req.body;
+  try {
+    const product = await Products.findOne({
+      where: { urunId },
+    });
+    if (product) {
+      await Products.update(
+        {
+          status: 0,
+        },
+        { where: { urunId } }
+      );
     }
 
     res.json({

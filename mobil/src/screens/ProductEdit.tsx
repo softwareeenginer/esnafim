@@ -61,6 +61,18 @@ const ProductEdit = (props: any) => {
     });
   };
 
+  const getDelete = () => {
+    post("/api/profile/get/product-delete", {urunId}).then((res: any) => {
+      if (res.result) {
+        setLoading(false);
+        navigation.pop();
+
+      } else {
+        navigation.pop();
+      }
+    });
+  };
+
   if (loading) {
     return (
       <View style={{ alignItems: "center", justifyContent: "center", flex: 1 }}>
@@ -281,7 +293,9 @@ const ProductEdit = (props: any) => {
               navigation={navigation}
             />
             <CheckButton
-              onPress={() => console.log("deleted")}
+              onPress={() => {
+                getDelete();
+              }}
               text="Ürünü Sil"
               color="#B3B4B3"
               navigate="MyMarket"
