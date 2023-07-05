@@ -38,6 +38,11 @@ module.exports = function(sequelize, DataTypes) {
     priceDiscount: {
       type: DataTypes.STRING(256),
       allowNull: true
+    },
+    statu: {
+      type: DataTypes.TINYINT,
+      allowNull: false,
+      defaultValue: 1
     }
   }, {
     sequelize,

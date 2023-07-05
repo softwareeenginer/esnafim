@@ -1,5 +1,5 @@
 import React from "react";
-import { ImageBackground, StyleSheet, View } from "react-native";
+import { ImageBackground, StyleSheet, View, Image } from "react-native";
 import Layout from "../../constants/Layout";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { HStack, Box, Text, VStack, Spinner } from "native-base";
@@ -40,7 +40,6 @@ const NeighbourhoodPage = () => {
 
   const getMarkets = () => {
     post("/api/market/get/location").then((res: any) => {
-      console.log(res);
       if (res.result) {
         setLoading(false);
         setMarketsInfo(res.markets);
@@ -63,9 +62,39 @@ const NeighbourhoodPage = () => {
   return (
     <SafeAreaView style={styles.SafeAreaView}>
       {marketsInfo.length < 1 ? (
-        <Text style={{ margin: 20, color: "black" , textAlign:'center'}}>
-          {"Mahallenizde sisteme kayıtlı bir market bulunamadı :("}
-        </Text>
+        <View
+          style={{
+            width: Layout.window.width,
+            height: Layout.window.height,
+            alignItems: "center",
+            justifyContent:"space-around",
+          }}
+        >
+           <Text
+            bold
+            fontSize={20}
+            style={{
+              margin: 30,
+              color: "red",
+              textAlign: "center",
+              width: Layout.window.width * 0.7,
+            }}
+          >
+            {"Üzgünüz, Bir sorun oluştu !:("}
+          </Text>
+          <Image alt=" " source={require("../../assets/images/ret.png")} />
+          <Text
+            bold
+            fontSize={20}
+            style={{
+              color: "black",
+              textAlign: "center",
+              width: Layout.window.width * 0.7,
+            }}
+          >
+            {"Mahallenizde sisteme kayıtlı bir market bulunamadı"}
+          </Text>
+        </View>
       ) : (
         <>
           <HStack
@@ -108,7 +137,6 @@ const NeighbourhoodPage = () => {
             ListHeaderComponent={
               <>
                 {marketsInfo?.map((i: any, index: number) => {
-                  console.log(i);
                   return (
                     <TouchableOpacity
                       onPress={() =>
@@ -121,7 +149,7 @@ const NeighbourhoodPage = () => {
                     >
                       <Market
                         marketInfo={i.marketler}
-                        status={i.follow.status}
+                        status={i.follow ? i.follow.status : 0}
                         onPress={() => {
                           postFollows(i.marketler.marketId);
                         }}

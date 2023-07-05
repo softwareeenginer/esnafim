@@ -1,8 +1,18 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { StyleSheet, View } from "react-native";
 import Layout from "../../constants/Layout";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { HStack, Icon, Image, Input, Spinner, Text, VStack } from "native-base";
+import {
+  CheckIcon,
+  HStack,
+  Icon,
+  Image,
+  Input,
+  Select,
+  Spinner,
+  Text,
+  VStack,
+} from "native-base";
 import { AntDesign, Feather } from "@expo/vector-icons";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
@@ -13,7 +23,6 @@ import * as ImagePicker from "expo-image-picker";
 
 const PersonalSettings = () => {
   const navigation: any = useNavigation();
-  const countries = ["Egypt", "Canada", "Australia", "Ireland"];
 
   const [userInfo, setUserInfo]: any = React.useState(null);
   const [name, setName]: any = React.useState(null);
@@ -87,7 +96,11 @@ const PersonalSettings = () => {
 
       const formData: any = new FormData();
 
-      console.log(imageUri,`${new Date().getTime()}.${imageExtension}`,`${result.assets[0].type}/${imageExtension}`)
+      console.log(
+        imageUri,
+        `${new Date().getTime()}.${imageExtension}`,
+        `${result.assets[0].type}/${imageExtension}`
+      );
 
       formData.append("image", {
         uri: imageUri,
@@ -208,68 +221,6 @@ const PersonalSettings = () => {
             }
             onChangeText={(text) => {
               setEmail(text);
-            }}
-          />
-          <HStack space={5}>
-            <SelectDropdown
-              data={countries}
-              defaultButtonText="Gaziantep"
-              buttonStyle={{
-                backgroundColor: "white",
-                borderBottomColor: "#878BFF",
-                width: Layout.window.width * 0.37,
-              }}
-              dropdownOverlayColor="rgba(0,0,0,0.7)"
-              buttonTextStyle={{ fontSize: 12, position: "absolute", right: 5 }}
-              onSelect={(selectedItem, index) => {
-                console.log(selectedItem, index);
-              }}
-              buttonTextAfterSelection={(selectedItem, index) => {
-                return selectedItem;
-              }}
-              rowTextForSelection={(item, index) => {
-                return item;
-              }}
-            />
-            <SelectDropdown
-              data={countries}
-              defaultButtonText="Şehitkamil"
-              buttonStyle={{
-                backgroundColor: "white",
-                borderBottomColor: "#878BFF",
-                width: Layout.window.width * 0.37,
-              }}
-              dropdownOverlayColor="rgba(0,0,0,0.7)"
-              buttonTextStyle={{ fontSize: 12, position: "absolute", right: 5 }}
-              onSelect={(selectedItem, index) => {
-                console.log(selectedItem, index);
-              }}
-              buttonTextAfterSelection={(selectedItem, index) => {
-                return selectedItem;
-              }}
-              rowTextForSelection={(item, index) => {
-                return item;
-              }}
-            />
-          </HStack>
-          <SelectDropdown
-            data={countries}
-            defaultButtonText="Seyrantepe mah."
-            buttonStyle={{
-              backgroundColor: "white",
-              borderBottomColor: "#878BFF",
-              width: Layout.window.width * 0.8,
-            }}
-            dropdownOverlayColor="rgba(0,0,0,0.7)"
-            buttonTextStyle={{ fontSize: 12, position: "absolute", right: 5 }}
-            onSelect={(selectedItem, index) => {
-              console.log(selectedItem, index);
-            }}
-            buttonTextAfterSelection={(selectedItem, index) => {
-              return selectedItem;
-            }}
-            rowTextForSelection={(item, index) => {
-              return item;
             }}
           />
           <Input

@@ -89,7 +89,6 @@ const FollowMarketPage = () => {
 
       <ScrollView showsVerticalScrollIndicator={false}>
         {marketsInfo?.map((i: any, index: number) => {
-          console.log(i.marketId);
           return (
             <TouchableOpacity
               onPress={() =>

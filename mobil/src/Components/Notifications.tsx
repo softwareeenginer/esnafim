@@ -8,6 +8,7 @@ interface IProps {
 }
 
 export default function Notifications(props: IProps) {
+  
   return (
     <HStack
       marginTop={3}
@@ -17,6 +18,8 @@ export default function Notifications(props: IProps) {
       padding={3}
       borderRadius={15}
       space={5}
+      borderWidth={1}
+      borderColor={props.notificationInfo?.statu==1?"#FF7B00":"white"}
     >
       <Image
         alt=" "
@@ -26,7 +29,7 @@ export default function Notifications(props: IProps) {
         source={require("../../assets/images/bakkal.png")}
       />
       <VStack>
-        {props.notificationInfo?.priceDiscount == "Null" ? (
+        {props.notificationInfo?.priceDiscount == "NULL" ? (
           <Text bold fontSize={14}>
             {" "}
             Yeni Ürün / {props.notificationInfo?.name}
@@ -45,7 +48,7 @@ export default function Notifications(props: IProps) {
           {props.notificationInfo?.product}{" "}
           {props.notificationInfo?.priceProduct} TL{" "}
         </Text>
-        {props.notificationInfo?.priceDiscount == "Null" ? (
+        {props.notificationInfo?.priceDiscount == "NULL" ? (
           <></>
         ) : (
           <Text>Değil ! {props.notificationInfo?.priceDiscount} TL</Text>

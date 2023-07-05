@@ -22,7 +22,6 @@ const ProductDetail = (props: any) => {
   const [urunId, setUrunId] = React.useState(props.route.params.urunId);
   const [marketId] = React.useState(props.route.params.marketId);
 
-  
   React.useEffect(() => {
     getMarkets();
   }, [urunId]);
@@ -70,7 +69,9 @@ const ProductDetail = (props: any) => {
         >
           <AntDesign name="left" size={20} color={"black"} />
         </TouchableOpacity>
-        <Text fontSize={20} bold>{marketInfo?.name}</Text>
+        <Text fontSize={20} bold>
+          {marketInfo?.name}
+        </Text>
         <TouchableOpacity
           style={{
             backgroundColor: "white",
@@ -84,31 +85,34 @@ const ProductDetail = (props: any) => {
           <AntDesign name="left" size={20} color={"black"} />
         </TouchableOpacity>
       </HStack>
-        <VStack>
-          <Text alignSelf={"center"} bold>
-            {productInfo?.name}
-          </Text>
-          <HStack
-            width={Layout.window.width}
-            marginTop={5}
-            paddingX={5}
-            alignItems={"flex-end"}
-            space={3}
+      <VStack>
+        <Text alignSelf={"center"} bold>
+          {productInfo?.name}
+        </Text>
+        <HStack
+          width={Layout.window.width}
+          marginTop={5}
+          paddingX={5}
+          alignItems={"flex-end"}
+          space={3}
+        >
+          <Box
+            padding={5}
+            backgroundColor={"white"}
+            shadow={3}
+            borderRadius={5}
           >
-            <Box
-              padding={5}
-              backgroundColor={"white"}
-              shadow={3}
-              borderRadius={5}
+            <ImageBackground
+              style={{
+                width: Layout.window.width * 0.3,
+                height: Layout.window.height * 0.2,
+              }}
+              resizeMode="contain"
+              source={{ uri: productInfo?.image }}
             >
-              <ImageBackground
-                style={{
-                  width: Layout.window.width * 0.3,
-                  height: Layout.window.height * 0.2,
-                }}
-                resizeMode="contain"
-                source={{ uri: productInfo?.image }}
-              >
+              {productInfo?.priceDiscount == null ? (
+                <></>
+              ) : (
                 <Box
                   backgroundColor={"#FF7B00"}
                   width={70}
@@ -129,75 +133,82 @@ const ProductDetail = (props: any) => {
                     indirimli ürün
                   </Text>
                 </Box>
-              </ImageBackground>
-            </Box>
-            <Box width={Layout.window.width * 0.3}>
-              <Text bold fontSize={10}>
-                İndirimsiz Fiyat :
+              )}
+            </ImageBackground>
+          </Box>
+          <Box width={Layout.window.width * 0.3}>
+            <Text bold fontSize={10}>
+              İndirimsiz Fiyat :
+            </Text>
+            {productInfo?.priceDiscount == null ? (
+              <Text alignSelf={"flex-end"} bold fontSize={12} color={"#FF7B00"}>
+                ---
               </Text>
+            ) : (
               <Text alignSelf={"flex-end"} bold fontSize={12} color={"#FF7B00"}>
                 25 TL
               </Text>
-              <Text bold fontSize={12}>
-                İndirimli Fiyat :
-              </Text>
-              <Text alignSelf={"flex-end"} bold fontSize={16} color={"#FF7B00"}>
-                {productInfo?.price} TL
-              </Text>
-            </Box>
+            )}
+            <Text bold fontSize={12}>
+              İndirimli Fiyat :
+            </Text>
+            <Text alignSelf={"flex-end"} bold fontSize={16} color={"#FF7B00"}>
+              {productInfo?.price} TL
+            </Text>
+          </Box>
+        </HStack>
+        <VStack marginLeft={6} space={3}>
+          <HStack
+            marginTop={1}
+            width={Layout.window.width * 0.4}
+            justifyContent={"space-between"}
+          >
+            <Text bold fontSize={10}>
+              {productInfo?.description}
+            </Text>
+            <Text bold fontSize={10}>
+              {productInfo?.description}
+            </Text>
           </HStack>
-          <VStack marginLeft={6} space={3}>
-            <HStack
-              marginTop={1}
-              width={Layout.window.width * 0.4}
-              justifyContent={"space-between"}
-            >
-              <Text bold fontSize={10}>
-                {productInfo?.description}
-              </Text>
-              <Text bold fontSize={10}>
-                {productInfo?.description}
-              </Text>
-            </HStack>
-            <Text bold width={Layout.window.width * 0.7}>
-              {productInfo?.name} ,{productInfo?.description}
-            </Text>
-          </VStack>
-          <VStack width={Layout.window.width} padding={5}>
-            <Text bold fontSize={"md"}>
-              Marketin Diğer Ürünleri
-            </Text>
-            <FlatList
-              columnWrapperStyle={{ justifyContent: "space-between" }}
-              style={{
-                width: Layout.window.width * 0.9,
-                alignSelf: "center",
-                marginTop: "5%",
-              }}
-              numColumns={2}
-              data={productsInfo}
-              renderItem={({ item }) => (
-                <TouchableOpacity
-                  onPress={() => {
-                    setUrunId(item.urunId)
-                  }}
-                  style={{
-                    backgroundColor: "white",
-                    paddingBottom: 10,
-                    borderRadius: 16,
-                    marginTop: "10%",
-                  }}
-                >
-                  <Product
-                    productInfo={item}
-                    marketInfo={marketInfo}
-                    indirim={true}
-                  />
-                </TouchableOpacity>
-              )}
-            />
-          </VStack>
+          <Text bold width={Layout.window.width * 0.7}>
+            {productInfo?.name} ,{productInfo?.description}
+          </Text>
         </VStack>
+        <VStack width={Layout.window.width} padding={5}>
+          <Text bold fontSize={"md"}>
+            Marketin Diğer Ürünleri
+          </Text>
+          <FlatList
+            columnWrapperStyle={{ justifyContent: "space-between" }}
+            style={{
+              width: Layout.window.width * 0.9,
+              alignSelf: "center",
+              marginTop: "5%",
+            }}
+            numColumns={2}
+            data={productsInfo}
+            renderItem={({ item }) => (
+              <TouchableOpacity
+                onPress={() => {
+                  setUrunId(item.urunId);
+                }}
+                style={{
+                  backgroundColor: "white",
+                  paddingBottom: 10,
+                  borderRadius: 16,
+                  marginTop: "10%",
+                }}
+              >
+                <Product
+                  productInfo={item}
+                  marketInfo={marketInfo}
+                  indirim={true}
+                />
+              </TouchableOpacity>
+            )}
+          />
+        </VStack>
+      </VStack>
     </SafeAreaView>
   );
 };

@@ -46,22 +46,11 @@ router.post("/get", async (req, res) => {
         where: { adressId: user_.adressId },
       });
 
-      // const city = await Citys.findOne({
-      //   where: { sehirId: adress_.sehirId },
-      // });
-
-      // const district = await Districts.findOne({
-      //   where: {
-      //     ilceId: adress_.ilceId,
-      //   },
-      // });
-
       const neighborhood = await Neighborhoods.findOne({
-        wher: {
+        where: {
           mahalleId: adress_.mahalleId,
         },
       });
-
       const address = neighborhood.name;
 
       markets[i] = {

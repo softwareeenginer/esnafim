@@ -5,13 +5,12 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import { useNavigation } from "expo-router";
 
 interface IProps {
-  status:any;
+  status: any;
   marketInfo: any;
   onPress: Function;
 }
-
 export default function Market(props: IProps) {
-  // console.log(props);
+
   return (
     <VStack
       bg={"white"}
@@ -38,7 +37,7 @@ export default function Market(props: IProps) {
           </Text>
           <Text bold>{props.marketInfo?.product}</Text>
           <TouchableOpacity
-          //@ts-ignore
+            //@ts-ignore
             onPress={props.onPress}
             style={{
               backgroundColor: props.status == true ? "#B3B4B3" : "#00C599",
@@ -66,9 +65,7 @@ export default function Market(props: IProps) {
         paddingBottom={3}
         width={Layout.window.width * 0.7}
       >
-        <Text bold color={"black"}>
-          500 m uzaklıkta
-        </Text>
+        
         <Text bold color={"black"}>
           {props.marketInfo?.address}
         </Text>

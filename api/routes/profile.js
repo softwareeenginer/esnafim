@@ -20,6 +20,7 @@ router.post("/get", async (req, res) => {
         userId,
       },
     });
+
     const type = info.type;
     let myMarket = {};
     let followsCount;
@@ -27,6 +28,16 @@ router.post("/get", async (req, res) => {
     if (type == 1) {
       let market = await Markets.findOne({ where: { userId } });
       myMarket = market;
+      if (!myMarket) {
+        const marketim = {
+          name: info.name,
+          image:
+            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR1CVnfFmF0FbLuS8jbgjgs1dE3HVwINFmzOw&usqp=CAU",
+          userId: info.userId,
+        };
+        await Markets.create(marketim);
+      }
+
       const follows = await Follows.count({
         where: { marketId: market.marketId },
       });
@@ -263,10 +274,11 @@ router.post("/get/product-add", async (req, res) => {
         description,
         marketId,
         image:
-          "https://e7.pngegg.com/pngimages/426/859/png-clipart-computer-icons-user-membership-black-area.png",
+          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRzrbxzUBMj9JKGOhHv8asgj7yP3gidrfCpUw&usqp=CAU",
 
         howMany,
         status: 1,
+        priceDiscount:priceDisc
       };
       await Products.create(product);
       if (isNotification) {

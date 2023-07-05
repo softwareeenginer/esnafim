@@ -20,7 +20,6 @@ const MarketDetail = (props: any) => {
   const [status, setStatus]: any = React.useState();
   const [loading, setLoading] = React.useState(true);
   const [marketId] = React.useState(props.route.params.id);
-  console.log(status);
   useFocusEffect(
     React.useCallback(() => {
       getMarkets();
@@ -123,17 +122,19 @@ const MarketDetail = (props: any) => {
             {marketInfo?.name}
           </Text>
           <Text bold fontSize={"xl"} color={"white"}>
-            1000 km
+            {productsInfo?.length}
           </Text>
         </HStack>
       </ImageBackground>
 
       <VStack width={Layout.window.width}>
-        <Text marginLeft={5} bold fontSize={"xl"} alignSelf={"flex-start"}>
-          {" "}
-          KAPALI{" "}
-        </Text>
-        <Text bold fontSize={"2xl"} alignSelf={"center"} color={"#FF7B00"}>
+        <Text
+          bold
+          fontSize={"2xl"}
+          alignSelf={"center"}
+          marginTop={10}
+          color={"#FF7B00"}
+        >
           {" "}
           ÜRÜNLER{" "}
         </Text>

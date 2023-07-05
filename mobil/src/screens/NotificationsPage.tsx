@@ -34,6 +34,17 @@ const NotificationsPage = () => {
     });
   };
 
+  // Okundu bilgisini göndereceğimiz API
+
+  const handleRead = (notificationId: any) => {
+    setLoading(true);
+    post("/api/notification/get-one", { notificationId }).then(
+      (res: any) => {
+        getNotifications();
+      }
+    );
+  };
+
   if (loading) {
     return (
       <View style={{ alignItems: "center", justifyContent: "center", flex: 1 }}>
@@ -79,11 +90,13 @@ const NotificationsPage = () => {
         {notificationsInfo?.map((i: any, index: number) => {
           return (
             <TouchableOpacity
-              onPress={() => {}}
+              onPress={() => {
+                handleRead(i.bildirimId);
+              }}
               key={index}
               style={{ marginBottom: i == 12 ? 20 : 0 }}
             >
-              <Notifications notificationInfo={i}/>
+              <Notifications notificationInfo={i} />
             </TouchableOpacity>
           );
         })}

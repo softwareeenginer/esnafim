@@ -43,7 +43,7 @@ export default function Product(props: IProps) {
             resizeMode="contain"
             source={{ uri: props.productInfo?.image }}
           >
-            {props.indirim == true ? (
+            {props.productInfo?.priceDiscount == true ? (
               <Box
                 marginTop={Layout.window.height * 0.035}
                 backgroundColor={"#FF7B00"}
